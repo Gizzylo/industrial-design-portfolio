@@ -42,7 +42,12 @@ Everything is plain HTML — open a file and change the text.
   too.
 - **About page** — `about.html`.
 - **Colors, type scale, spacing** — the `:root` block at the top of `css/style.css`.
-  Dark mode picks up the same tokens via `prefers-color-scheme`.
+  The page is white-only: there is no dark mode, and `color-scheme: light` keeps it
+  white even when the visitor's OS is set to dark.
+- **Alignment** — everything is centred. `body` sets `text-align: center`, and the
+  measure-constrained blocks (`.hero__body`, `.prose > *`, `.project__desc`, …) use
+  `margin-inline: auto`. To go back to a left-aligned layout you'd remove the
+  `text-align` on `body` and switch those `auto` inline margins back to `0`.
 
 Visitors with "reduce motion" enabled get no hero animation, no hover zoom, and no
 smooth scrolling — the splitter script exits early and leaves the plain heading alone.

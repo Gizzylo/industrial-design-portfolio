@@ -9,7 +9,6 @@
   --ink-soft:   #49505d;
   --ink-faint:  #8b91a0;
   --paper:      #ffffff;
-  --surface:    #f2f4f7;
   --rule:       #e4e7ed;
   --accent:     #2e00d4;
 
@@ -93,9 +92,7 @@ main > *,
   top: 0;
   z-index: 10;
   padding-block: clamp(1.1rem, 3vw, 1.6rem);
-  background: color-mix(in srgb, var(--paper) 86%, transparent);
-  backdrop-filter: saturate(140%) blur(12px);
-  -webkit-backdrop-filter: saturate(140%) blur(12px);
+  background: var(--paper);
 }
 
 .nav {
@@ -118,28 +115,28 @@ main > *,
   align-items: center;
   gap: 0.25rem;
   margin: 0;
-  padding: 0.25rem;
+  padding: 0;
   list-style: none;
   font-size: var(--step-sm);
-  background: var(--surface);
-  border-radius: 999px;
 }
 
 .nav__links a {
   display: block;
-  padding: 0.4rem 0.9rem;
-  border-radius: 999px;
+  padding: 0.4rem 0.75rem;
   text-decoration: none;
   color: var(--ink-soft);
-  transition: color 0.2s var(--ease), background-color 0.2s var(--ease);
+  transition: color 0.2s var(--ease);
 }
 
 .nav__links a:hover { color: var(--ink); }
 
+/* Current page marked with an underline rather than a filled pill, so the
+   header stays entirely white. */
 .nav__links a[aria-current="page"] {
   color: var(--ink);
-  background: var(--paper);
-  box-shadow: 0 1px 2px rgb(38 42 54 / 0.08);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.32em;
 }
 
 /* --- hero --------------------------------------------------------- */
@@ -282,7 +279,7 @@ main > *,
   aspect-ratio: 4 / 3;
   display: grid;
   place-items: center;
-  background: var(--surface);
+  background: var(--paper);
   border-radius: 10px;
   overflow: hidden;
 }

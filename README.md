@@ -60,15 +60,16 @@ to an hour after a deploy — new HTML, old styling. The `?v=` on the asset link
 what prevents that:
 
 ```html
-<link rel="stylesheet" href="css/style.css?v=2">
-<script src="js/reveal.js?v=2"></script>
+<link rel="stylesheet" href="css/style.css?v=3">
+<script src="js/reveal.js?v=3"></script>
 ```
 
 Bump that number in all three HTML files whenever you change `style.css` or
-`reveal.js`, and the new file is fetched immediately:
+`reveal.js`, and the new file is fetched immediately. This increments whatever the
+current version is, so there's no number to keep in sync here:
 
 ```sh
-sed -i '' 's/?v=2/?v=3/g' index.html about.html 404.html
+perl -pi -e 's/\?v=(\d+)/"?v=".($1+1)/ge' index.html about.html 404.html
 ```
 
 Images don't need this — give a changed photo a new filename instead.

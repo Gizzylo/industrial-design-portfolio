@@ -52,6 +52,27 @@ Everything is plain HTML — open a file and change the text.
 Visitors with "reduce motion" enabled get no hero animation, no hover zoom, and no
 smooth scrolling — the splitter script exits early and leaves the plain heading alone.
 
+## After editing CSS or JS — bump the version
+
+`netlify.toml` tells browsers to cache `/css/*` and `/js/*` for an hour. The filenames
+never change, so without help a returning visitor keeps the **old** stylesheet for up
+to an hour after a deploy — new HTML, old styling. The `?v=` on the asset links is
+what prevents that:
+
+```html
+<link rel="stylesheet" href="css/style.css?v=2">
+<script src="js/reveal.js?v=2"></script>
+```
+
+Bump that number in all three HTML files whenever you change `style.css` or
+`reveal.js`, and the new file is fetched immediately:
+
+```sh
+sed -i '' 's/?v=2/?v=3/g' index.html about.html 404.html
+```
+
+Images don't need this — give a changed photo a new filename instead.
+
 ## Local preview
 
 No tooling required — open the file directly:

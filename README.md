@@ -7,8 +7,13 @@ index.html      hero, four project slots, About Me teaser
 about.html      the second page: fuller background, capabilities, contact
 css/style.css   all styling; design tokens at the top in :root
 js/reveal.js    letter-by-letter hero animation (progressive enhancement)
+images/         project photos, 1200×900 (4:3) — see ATTRIBUTION.md
 netlify.toml    Netlify config (publishes the repo root as-is)
 ```
+
+> **The four project images are licensed stock placeholders, not Cindy's work.**
+> They're in place so the layout can be judged with real photography. Replace them
+> before sharing the site — details and a crop recipe in `images/ATTRIBUTION.md`.
 
 Type is [Fustat](https://fonts.google.com/specimen/Fustat) with
 [Instrument Serif](https://fonts.google.com/specimen/Instrument+Serif) italic for
@@ -26,10 +31,11 @@ Everything is plain HTML — open a file and change the text.
 - **Projects** — the four `<article class="project">` blocks in `index.html`. Each has a
   title, a meta line (`year · category`), and a short description. Copy an `<article>`
   to add a fifth; the grid reflows on its own.
-- **Project images** — replace the `<div class="project__media">` contents with
-  `<img src="images/your-file.jpg" alt="...">` and delete the `project__placeholder`
-  span. Put image files in an `images/` folder. 4:3 crops fit the existing layout best;
-  images get a subtle zoom on hover.
+- **Project images** — swap the `<img>` inside each `<div class="project__media">`.
+  Keep them 1200×900 (4:3) so they match the tile box exactly, and keep the
+  `width`/`height` attributes so the page doesn't shift while they load. Rewrite the
+  `alt` to describe the real project and drop the `Placeholder:` prefix. Images get a
+  subtle zoom on hover.
 - **Project detail pages** — when you write one, wrap the project title in a link
   (`<h3 class="project__title"><a href="projects/one.html">Project One</a></h3>`). The
   CSS already stretches that link over the whole card, so the image becomes clickable

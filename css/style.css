@@ -263,10 +263,15 @@ main > *,
 
 .work { padding-bottom: clamp(3rem, 8vw, 6rem); }
 
+/* The work section has no header row, so the grid carries the divider that
+   used to sit on .section-head. It lives inside .work's inline padding, so
+   the hairline lines up with the ones above the About block and footer. */
 .grid {
   display: grid;
   gap: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 3vw, 2rem);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
+  padding-top: clamp(1.75rem, 4vw, 2.5rem);
+  border-top: 1px solid var(--rule);
 }
 
 .project {

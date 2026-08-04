@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Cindy Lopez — Industrial Design</title>
   <meta name="description" content="Industrial design portfolio of Cindy Lopez — product design, prototyping, and design for manufacture.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -16,24 +19,33 @@
       <ul class="nav__links">
         <li><a href="index.html" aria-current="page">Work</a></li>
         <li><a href="about.html">About</a></li>
+        <li><a href="mailto:cindy.lopez@hayden.ai">Contact</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
-    <!-- INTRO — swap this copy for your own positioning statement. -->
-    <section class="intro">
-      <h1 class="intro__title">Industrial designer working across product form, mechanism, and manufacture.</h1>
-      <p class="intro__body">
-        I design physical products from first sketch to production-ready part — sketching,
-        CAD, prototyping, and the tolerance-level detail that decides whether a thing
-        actually gets built. Currently based in the Bay Area.
+    <!-- HERO — the h1 is split into letters by js/reveal.js. Keep it plain
+         text here; the splitter reads it and rebuilds it. -->
+    <section class="hero">
+      <h1 class="hero__title" data-split="letters">Hello! I'm Cindy Lopez</h1>
+      <p class="hero__body">
+        I'm an <em>industrial designer</em> in the Bay Area, working across product form,
+        mechanism, and manufacture — from first sketch to production-ready part.
       </p>
+      <div class="hero__actions">
+        <a class="button" href="#work">See selected work</a>
+        <a class="button button--ghost" href="mailto:cindy.lopez@hayden.ai">Get in touch</a>
+      </div>
     </section>
 
     <!-- PROJECTS — four slots. Duplicate an <article> to add a fifth. -->
     <section class="work" id="work" aria-labelledby="work-heading">
-      <h2 class="section-heading" id="work-heading">Selected work</h2>
+      <div class="section-head">
+        <p class="section-head__label">2024 &mdash; 2026</p>
+        <h2 class="section-head__title" id="work-heading">Selected work</h2>
+        <a class="link-arrow" href="about.html">About my process</a>
+      </div>
 
       <div class="grid">
         <article class="project">
@@ -96,21 +108,51 @@
 
     <!-- ABOUT ME teaser — full version lives on about.html -->
     <section class="about-teaser" aria-labelledby="about-heading">
-      <h2 class="section-heading" id="about-heading">About me</h2>
+      <div class="section-head">
+        <p class="section-head__label">About</p>
+        <h2 class="section-head__title" id="about-heading">How I got here</h2>
+      </div>
       <p class="about-teaser__body">
         I came to industrial design through making things — shop work, then CAD, then the
         long middle part where a design meets a supplier and has to survive. I care about
-        products that feel resolved in the hand and are honest about how they were made.
+        products that feel <span class="accent-serif">resolved</span> in the hand and are
+        honest about how they were made.
       </p>
       <p><a class="link-arrow" href="about.html">More about my background</a></p>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p class="site-footer__contact">
-      <a href="mailto:cindy.lopez@hayden.ai">cindy.lopez@hayden.ai</a>
-    </p>
-    <p class="site-footer__meta">&copy; 2026 Cindy Lopez</p>
+    <div class="site-footer__top">
+      <div>
+        <p class="eyebrow">Available for work</p>
+        <p class="site-footer__pitch">Let's make something worth building.</p>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer">
+        <div>
+          <p class="eyebrow">Site</p>
+          <ul>
+            <li><a href="index.html">Work</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="eyebrow">Elsewhere</p>
+          <ul>
+            <li><a href="mailto:cindy.lopez@hayden.ai">Email</a></li>
+            <!-- Add LinkedIn, résumé PDF, or Instagram here. -->
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p>&copy; 2026 Cindy Lopez</p>
+      <p>Bay Area, California</p>
+    </div>
   </footer>
+
+  <script src="js/reveal.js"></script>
 </body>
 </html>

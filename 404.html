@@ -4,6 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Page not found — Cindy Lopez</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -13,25 +16,30 @@
       <ul class="nav__links">
         <li><a href="/index.html">Work</a></li>
         <li><a href="/about.html">About</a></li>
+        <li><a href="mailto:cindy.lopez@hayden.ai">Contact</a></li>
       </ul>
     </nav>
   </header>
 
   <main>
-    <section class="intro">
-      <h1 class="intro__title">That page doesn't exist.</h1>
-      <p class="intro__body">
-        The link may be out of date, or the address slightly off.
+    <section class="hero">
+      <h1 class="hero__title" data-split="letters">That page doesn't exist</h1>
+      <p class="hero__body">
+        The link may be out of date, or the address <em>slightly</em> off.
       </p>
-      <p><a class="link-arrow" href="/index.html">Back to the work</a></p>
+      <div class="hero__actions">
+        <a class="button" href="/index.html">Back to the work</a>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p class="site-footer__contact">
-      <a href="mailto:cindy.lopez@hayden.ai">cindy.lopez@hayden.ai</a>
-    </p>
-    <p class="site-footer__meta">&copy; 2026 Cindy Lopez</p>
+    <div class="site-footer__bottom">
+      <p>&copy; 2026 Cindy Lopez</p>
+      <p>Bay Area, California</p>
+    </div>
   </footer>
+
+  <script src="/js/reveal.js"></script>
 </body>
 </html>

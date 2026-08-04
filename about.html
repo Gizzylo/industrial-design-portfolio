@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>About — Cindy Lopez</title>
   <meta name="description" content="Background, approach, and capabilities of industrial designer Cindy Lopez.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -16,16 +19,18 @@
       <ul class="nav__links">
         <li><a href="index.html">Work</a></li>
         <li><a href="about.html" aria-current="page">About</a></li>
+        <li><a href="mailto:cindy.lopez@hayden.ai">Contact</a></li>
       </ul>
     </nav>
   </header>
 
   <main id="about">
     <!-- ABOUT — replace the copy below with your real background. -->
-    <section class="intro">
-      <h1 class="intro__title">About me</h1>
-      <p class="intro__body">
-        A short opening line about who you are and the kind of work you want more of.
+    <section class="hero">
+      <h1 class="hero__title" data-split="letters">A bit about me</h1>
+      <p class="hero__body">
+        A short opening line about who you are and the kind of work you want
+        <em>more of</em>.
       </p>
     </section>
 
@@ -66,19 +71,51 @@
     </div>
 
     <section class="about-teaser" aria-labelledby="contact-heading">
-      <h2 class="section-heading" id="contact-heading">Get in touch</h2>
+      <div class="section-head">
+        <p class="section-head__label">Contact</p>
+        <h2 class="section-head__title" id="contact-heading">Get in touch</h2>
+      </div>
       <p class="about-teaser__body">
         Open to freelance and full-time work. The fastest way to reach me is email.
       </p>
-      <p><a class="link-arrow" href="mailto:cindy.lopez@hayden.ai">cindy.lopez@hayden.ai</a></p>
+      <div class="hero__actions">
+        <a class="button" href="mailto:cindy.lopez@hayden.ai">cindy.lopez@hayden.ai</a>
+        <a class="button button--ghost" href="index.html">See the work</a>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p class="site-footer__contact">
-      <a href="index.html">Back to work</a>
-    </p>
-    <p class="site-footer__meta">&copy; 2026 Cindy Lopez</p>
+    <div class="site-footer__top">
+      <div>
+        <p class="eyebrow">Available for work</p>
+        <p class="site-footer__pitch">Let's make something worth building.</p>
+      </div>
+
+      <nav class="footer-nav" aria-label="Footer">
+        <div>
+          <p class="eyebrow">Site</p>
+          <ul>
+            <li><a href="index.html">Work</a></li>
+            <li><a href="about.html">About</a></li>
+          </ul>
+        </div>
+        <div>
+          <p class="eyebrow">Elsewhere</p>
+          <ul>
+            <li><a href="mailto:cindy.lopez@hayden.ai">Email</a></li>
+            <!-- Add LinkedIn, résumé PDF, or Instagram here. -->
+          </ul>
+        </div>
+      </nav>
+    </div>
+
+    <div class="site-footer__bottom">
+      <p>&copy; 2026 Cindy Lopez</p>
+      <p>Bay Area, California</p>
+    </div>
   </footer>
+
+  <script src="js/reveal.js"></script>
 </body>
 </html>

@@ -9,13 +9,13 @@ projects/       one page per project, linked from the tiles
 404.html        styled not-found page
 css/style.css   all styling; design tokens at the top in :root
 js/reveal.js    letter-by-letter hero animation (progressive enhancement)
-images/         project photos, 1200×900 (4:3) — see ATTRIBUTION.md
+images/         flat dark-grey SVG placeholders — swap for real photos
 netlify.toml    Netlify config (publishes the repo root as-is)
 ```
 
-> **The four project images are licensed stock placeholders, not Cindy's work.**
-> They're in place so the layout can be judged with real photography. Replace them
-> before sharing the site — details and a crop recipe in `images/ATTRIBUTION.md`.
+> **All imagery is placeholder.** Every image points at a flat dark-grey SVG
+> (`images/placeholder-4x3.svg` and `placeholder-16x9.svg`), reused across the tiles
+> and project pages. Replace them with real photography before sharing the site.
 
 Type is [Fustat](https://fonts.google.com/specimen/Fustat) throughout, with
 [Instrument Serif](https://fonts.google.com/specimen/Instrument+Serif) italic for
@@ -37,11 +37,20 @@ Everything is plain HTML — open a file and change the text.
   is just an image with its title alongside; the title links to the project page. Copy
   an `<article>` to add a fifth; the grid reflows on its own.
 - **Project images** — swap the `<img>` inside each `<div class="project__media">`.
-  Keep them 1200×900 (4:3) so they match the tile box exactly, and keep the
-  `width`/`height` attributes so the page doesn't shift while they load. Rewrite the
-  `alt` to describe the real project and drop the `Placeholder:` prefix. Images blur on
-  hover; the small scale paired with it hides the pale fringe a blur leaves at the
-  tile edge.
+  Keep 4:3 (1200×900 suits the tiles, 1600×900 the case-study leads) and keep the
+  `width`/`height` attributes so the page doesn't shift while they load. The
+  placeholders carry `alt=""` because a grey rectangle says nothing; write real alt
+  text once there's a real photo. Tile images blur on hover; the small scale paired
+  with it hides the pale fringe a blur leaves at the tile edge.
+- **Project case studies** — each page in `projects/` follows one structure: title and
+  one-line subtitle, a `.case-meta` spec row (Duration / Industry / Skills / Role), a
+  lead image, "The problem" with a pulled-out `.case-question`, numbered
+  `.opportunity-list` opportunities, paired images, then "Form development".
+- **Page width** — the layout is full-bleed: `--page: 100%`, so sections span the
+  viewport and are held off the edges only by `--gutter`. Reading copy stays readable
+  because `--measure` still caps paragraph width. The project grid is a fixed two
+  columns above 46rem rather than auto-fit, which would keep adding columns on wide
+  screens and shrink the images again.
 - **Project pages** — one file per project in `projects/`. To add a fifth, copy an
   existing one, then add a matching `<article class="project">` to `index.html` whose
   title links to it. The tile title is a stretched link, so clicking anywhere on the

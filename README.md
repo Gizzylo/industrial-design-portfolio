@@ -17,11 +17,13 @@ netlify.toml    Netlify config (publishes the repo root as-is)
 > They're in place so the layout can be judged with real photography. Replace them
 > before sharing the site — details and a crop recipe in `images/ATTRIBUTION.md`.
 
-Type is [Fustat](https://fonts.google.com/specimen/Fustat) for everything, with
+Type is [Fustat](https://fonts.google.com/specimen/Fustat) throughout, with
 [Instrument Serif](https://fonts.google.com/specimen/Instrument+Serif) italic for
-accents and [Sacramento](https://fonts.google.com/specimen/Sacramento) for the
-signature wordmark — all from Google Fonts. If a font ever fails to load the pages
-fall back to the system stack — nothing breaks.
+accents — both from Google Fonts. If a font ever fails to load the pages fall back to
+the system stack — nothing breaks.
+
+The header mark is the bold "CL" monogram. It carries an `aria-label` with the full
+name, since two letters on their own tell a screen reader nothing.
 
 ## Editing
 

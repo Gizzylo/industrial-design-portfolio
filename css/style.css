@@ -25,7 +25,6 @@
 
   --sans:   "Fustat", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --serif:  "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
-  --script: "Sacramento", "Snell Roundhand", "Apple Chancery", cursive;
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
@@ -105,21 +104,15 @@ main > *,
   gap: 0.75rem 1rem;
 }
 
-/* Signature wordmark, set right. `order` puts it after the links visually
-   while leaving it first in the DOM, so it stays the first thing reached by
-   keyboard and screen reader. */
+/* "CL" monogram, left. Same Fustat as the rest of the page, bold. */
 .nav__name {
-  order: 2;
-  font-family: var(--script);
-  font-size: clamp(1.6rem, 1.3rem + 1.1vw, 2.1rem);
-  font-weight: 400;
-  letter-spacing: 0;
-  /* Script faces sit high in their box; this optically centres it. */
-  line-height: 1.35;
+  font-family: var(--sans);
+  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1;
   text-decoration: none;
 }
-
-.nav__links { order: 1; }
 
 .nav__links {
   display: flex;

@@ -8,7 +8,8 @@ about.html      fuller background, capabilities, contact
 projects/       one page per project, linked from the tiles
 404.html        styled not-found page
 css/style.css   all styling; design tokens at the top in :root
-js/reveal.js    letter-by-letter hero animation (progressive enhancement)
+js/reveal.js    word-by-word hero animation (progressive enhancement)
+js/cursor.js    the bubble that trails the pointer
 images/         flat dark-grey SVG placeholders — swap for real photos
 netlify.toml    Netlify config (publishes the repo root as-is)
 ```
@@ -30,7 +31,10 @@ name, since two letters on their own tell a screen reader nothing.
 Everything is plain HTML — open a file and change the text.
 
 - **Hero copy** — the `.hero` section in `index.html`. Keep the `<h1>` as plain text:
-  `js/reveal.js` reads that text and rebuilds it as animated letters. Wrap a word in
+  `js/reveal.js` reads that text and rebuilds it as animated words, then fades the
+  `.hero__body` paragraph in as one block once the heading has finished. The stagger
+  and duration live only in `reveal.js` — it pushes them to CSS as `--stagger`,
+  `--dur` and `--delay`, so the JS and CSS timings can't drift apart. Wrap a word in
   `<em>` anywhere in `.hero` or `.prose` to set it in Instrument Serif italic, or use
   `<span class="accent-serif">` elsewhere.
 - **Project tiles** — the four `<article class="project">` blocks in `index.html`. Each
@@ -42,10 +46,16 @@ Everything is plain HTML — open a file and change the text.
   placeholders carry `alt=""` because a grey rectangle says nothing; write real alt
   text once there's a real photo. Tile images blur on hover; the small scale paired
   with it hides the pale fringe a blur leaves at the tile edge.
-- **Project case studies** — each page in `projects/` follows one structure: title and
-  one-line subtitle, a `.case-meta` spec row (Duration / Industry / Skills / Role), a
-  lead image, "The problem" with a pulled-out `.case-question`, numbered
-  `.opportunity-list` opportunities, paired images, then "Form development".
+- **Project case studies** — each page in `projects/` is an image-led scroll modelled on
+  a Behance case study: the hero shot comes first, edge to edge, then the title and
+  one-line subtitle, a `.case-meta` spec row (Duration / Industry / Skills / Role), and
+  nine numbered workflow stages — Context, Research, The problem, Users, Ideation,
+  Development, Prototyping, Details, Final design. Each stage is a short block of copy
+  followed by its images. Case pages are left-aligned (`.case` on `<main>`), unlike the
+  centred homepage.
+- **Full-bleed images** — add `.bleed` to a direct child of `<main>`. It zeroes the
+  gutter padding that `main > *` supplies; don't add a negative margin, which shifts
+  the box rather than widening it because `max-width: 100%` stops it growing back.
 - **Page width** — the layout is full-bleed: `--page: 100%`, so sections span the
   viewport and are held off the edges only by `--gutter`. Reading copy stays readable
   because `--measure` still caps paragraph width. The project grid is a fixed two
@@ -66,8 +76,16 @@ Everything is plain HTML — open a file and change the text.
   `margin-inline: auto`. To go back to a left-aligned layout you'd remove the
   `text-align` on `body` and switch those `auto` inline margins back to `0`.
 
-Visitors with "reduce motion" enabled get no hero animation, no hover transition, and
-no smooth scrolling — the splitter script exits early and leaves the plain heading alone.
+**Pointer bubble** — `js/cursor.js` adds a soft bubble that eases toward the cursor
+rather than tracking it exactly; that lag is what reads as liquid, and it stretches
+along its direction of travel. The native cursor stays visible on purpose, since
+people need a precise point to aim with. It's `pointer-events: none`, so it can never
+swallow a click.
+
+Visitors with "reduce motion" enabled get no hero animation, no hover transition, no
+bubble, and no smooth scrolling — both scripts exit early and leave the plain heading
+alone. The bubble is also skipped entirely on touch devices, where there's no pointer
+to follow.
 
 ## After editing CSS or JS — bump the version
 

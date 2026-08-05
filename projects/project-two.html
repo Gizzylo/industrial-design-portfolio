@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
-  <link rel="stylesheet" href="../css/style.css?v=9">
+  <link rel="stylesheet" href="../css/style.css?v=11">
 </head>
 <body>
   <a class="skip-link" href="#project">Skip to content</a>
@@ -23,11 +23,16 @@
     </nav>
   </header>
 
-  <main id="project">
-    <!-- TITLE + one-line framing -->
+  <main id="project" class="case">
+    <!-- HERO SHOT — first thing on the page, edge to edge. -->
+    <figure class="case-hero bleed">
+      <img src="../images/placeholder-16x9.svg" width="1600" height="900"
+           decoding="async" alt="">
+    </figure>
+
     <section class="hero">
-      <h1 class="hero__title" data-split="letters">Project Two</h1>
-      <p class="hero__body">A short subtitle framing the project in one line.</p>
+      <h1 class="hero__title" data-split="words">Project Two</h1>
+      <p class="hero__body">A short line naming the product and who it is for.</p>
     </section>
 
     <!-- SPEC ROW — swap in the real duration, industry and tools. -->
@@ -50,81 +55,174 @@
       </div>
     </dl>
 
-    <!-- LEAD IMAGE -->
-    <figure class="case-figure">
-      <img src="../images/placeholder-16x9.svg" width="1600" height="900"
-           decoding="async" alt="">
-      <figcaption>Placeholder — final render or hero shot.</figcaption>
-    </figure>
-
-    <!-- THE PROBLEM -->
+    <!-- WORKFLOW — one section per stage, each led by its images. -->
     <section class="case-section">
       <div class="section-head">
-        <p class="section-head__label">The problem</p>
-        <h2 class="section-head__title">What needed solving</h2>
+        <p class="section-head__label">01 — Context</p>
+        <h2 class="section-head__title">Where this started</h2>
       </div>
       <div class="prose">
-        <p>
-          Two or three sentences on the brief and what you set out to change — form,
-          interface, internal architecture. Name the materials: what it is made of and
-          why that mattered.
-        </p>
-      </div>
-      <p class="case-question">
-        How might <em>this product</em> feel more considered in both function and form?
-      </p>
-    </section>
-
-    <!-- OPPORTUNITIES -->
-    <section class="case-section">
-      <div class="section-head">
-        <p class="section-head__label">Opportunities</p>
-        <h2 class="section-head__title">What I found</h2>
-      </div>
-      <ul class="opportunity-list">
-        <li>The first shortcoming you identified, in one sentence.</li>
-        <li>The second — something a user struggles with in practice.</li>
-        <li>The third, and the constraint it had to work within.</li>
-      </ul>
-    </section>
-
-    <div class="case-figures">
-      <figure class="case-figure">
-        <img src="../images/placeholder-4x3.svg" width="1200" height="900"
-             loading="lazy" decoding="async" alt="">
-        <figcaption>Placeholder — sketch or teardown.</figcaption>
-      </figure>
-      <figure class="case-figure">
-        <img src="../images/placeholder-4x3.svg" width="1200" height="900"
-             loading="lazy" decoding="async" alt="">
-        <figcaption>Placeholder — CAD or prototype.</figcaption>
-      </figure>
-    </div>
-
-    <!-- FORM DEVELOPMENT -->
-    <section class="case-section">
-      <div class="section-head">
-        <p class="section-head__label">Form development</p>
-        <h2 class="section-head__title">Project Two</h2>
-      </div>
-      <div class="prose">
-        <p>
-          What the resolved design does differently. Lead with the decisions a reader can
-          see in the images — the interface, the mechanism, the detail that made it
-          manufacturable.
-        </p>
-        <ul class="list-plain">
-          <li>The first design feature, and what it fixes</li>
-          <li>The second — a mechanism or interaction</li>
-          <li>The third, and the manufacturing note behind it</li>
-        </ul>
+        <p>Two or three sentences on the situation you were designing into: who the user is, what they are doing when they reach for this, and why existing options fall short.</p>
       </div>
     </section>
 
     <figure class="case-figure">
       <img src="../images/placeholder-16x9.svg" width="1600" height="900"
            loading="lazy" decoding="async" alt="">
-      <figcaption>Placeholder — final form, in context.</figcaption>
+      <figcaption>Placeholder — where this started</figcaption>
+    </figure>
+
+    <section class="case-section">
+      <div class="section-head">
+        <p class="section-head__label">02 — Research</p>
+        <h2 class="section-head__title">What I looked at</h2>
+      </div>
+      <div class="prose">
+        <p>Interviews, teardowns, benchmarking — whatever you actually did. Say how many people you spoke to and what surprised you.</p>
+      </div>
+    </section>
+
+    <div class="case-figures">
+      <figure class="case-figure">
+        <img src="../images/placeholder-4x3.svg" width="1200" height="900"
+             loading="lazy" decoding="async" alt="">
+        <figcaption>Placeholder — what i looked at</figcaption>
+      </figure>
+      <figure class="case-figure">
+        <img src="../images/placeholder-4x3.svg" width="1200" height="900"
+             loading="lazy" decoding="async" alt="">
+        <figcaption>Placeholder — what i looked at</figcaption>
+      </figure>
+    </div>
+
+    <section class="case-section">
+      <div class="section-head">
+        <p class="section-head__label">03 — The problem</p>
+        <h2 class="section-head__title">What needed solving</h2>
+      </div>
+      <div class="prose">
+        <p>Land the insight in a sentence or two, then let the design question below carry it.</p>
+      </div>
+    </section>
+
+    <p class="case-question">
+      How might <em>Project Two</em> feel more considered in both function and form?
+    </p>
+
+    <section class="case-section">
+      <div class="section-head">
+        <p class="section-head__label">04 — Users</p>
+        <h2 class="section-head__title">Who it is for</h2>
+      </div>
+      <div class="prose">
+        <p>The person this is shaped around, and the moment of use that drove the decisions.</p>
+      </div>
+    </section>
+
+    <div class="case-figures">
+      <figure class="case-figure">
+        <img src="../images/placeholder-4x3.svg" width="1200" height="900"
+             loading="lazy" decoding="async" alt="">
+        <figcaption>Placeholder — who it is for</figcaption>
+      </figure>
+      <figure class="case-figure">
+        <img src="../images/placeholder-4x3.svg" width="1200" height="900"
+             loading="lazy" decoding="async" alt="">
+        <figcaption>Placeholder — who it is for</figcaption>
+      </figure>
+    </div>
+
+    <section class="case-section">
+      <div class="section-head">
+        <p class="section-head__label">05 — Ideation</p>
+        <h2 class="section-head__title">Exploring the form</h2>
+      </div>
+      <div class="prose">
+        <p>Sketch directions and what each one was testing. Show the ones you rejected and say why.</p>
+      </div>
+    </section>
+
+    <div class="case-figures">
+      <figure class="case-figure">
+        <img src="../images/placeholder-4x3.svg" width="1200" height="900"
+             loading="lazy" decoding="async" alt="">
+        <figcaption>Placeholder — exploring the form</figcaption>
+      </figure>
+      <figure class="case-figure">
+        <img src="../images/placeholder-4x3.svg" width="1200" height="900"
+             loading="lazy" decoding="async" alt="">
+        <figcaption>Placeholder — exploring the form</figcaption>
+      </figure>
+    </div>
+
+    <section class="case-section">
+      <div class="section-head">
+        <p class="section-head__label">06 — Development</p>
+        <h2 class="section-head__title">Resolving it in CAD</h2>
+      </div>
+      <div class="prose">
+        <p>Surfacing, internal layout, how the parts come together. Name the materials and the processes they imply.</p>
+      </div>
+    </section>
+
+    <figure class="case-figure">
+      <img src="../images/placeholder-16x9.svg" width="1600" height="900"
+           loading="lazy" decoding="async" alt="">
+      <figcaption>Placeholder — resolving it in cad</figcaption>
+    </figure>
+
+    <section class="case-section">
+      <div class="section-head">
+        <p class="section-head__label">07 — Prototyping</p>
+        <h2 class="section-head__title">Making it real</h2>
+      </div>
+      <div class="prose">
+        <p>Print iterations, mock-ups, the fit issue you only found in the hand.</p>
+      </div>
+    </section>
+
+    <div class="case-figures">
+      <figure class="case-figure">
+        <img src="../images/placeholder-4x3.svg" width="1200" height="900"
+             loading="lazy" decoding="async" alt="">
+        <figcaption>Placeholder — making it real</figcaption>
+      </figure>
+      <figure class="case-figure">
+        <img src="../images/placeholder-4x3.svg" width="1200" height="900"
+             loading="lazy" decoding="async" alt="">
+        <figcaption>Placeholder — making it real</figcaption>
+      </figure>
+    </div>
+
+    <section class="case-section">
+      <div class="section-head">
+        <p class="section-head__label">08 — Details</p>
+        <h2 class="section-head__title">The parts worth pointing at</h2>
+      </div>
+      <div class="prose">
+        <p>The interface, the mechanism, the seam you moved to make it mouldable.</p>
+      </div>
+    </section>
+
+    <figure class="case-figure">
+      <img src="../images/placeholder-16x9.svg" width="1600" height="900"
+           loading="lazy" decoding="async" alt="">
+      <figcaption>Placeholder — the parts worth pointing at</figcaption>
+    </figure>
+
+    <section class="case-section">
+      <div class="section-head">
+        <p class="section-head__label">09 — Final design</p>
+        <h2 class="section-head__title">Where it landed</h2>
+      </div>
+      <div class="prose">
+        <p>The resolved product, shot from the angles that explain it.</p>
+      </div>
+    </section>
+
+    <figure class="case-figure bleed">
+      <img src="../images/placeholder-16x9.svg" width="1600" height="900"
+           loading="lazy" decoding="async" alt="">
     </figure>
 
     <section class="about-teaser">
@@ -162,6 +260,7 @@
     </div>
   </footer>
 
-  <script src="../js/reveal.js?v=9"></script>
+  <script src="../js/reveal.js?v=11"></script>
+  <script src="../js/cursor.js?v=11"></script>
 </body>
 </html>

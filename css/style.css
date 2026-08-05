@@ -29,6 +29,8 @@
   --serif:  "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  /* Long, decelerating tail — the "smooth" in the hero reveal. */
+  --ease-soft: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Light only — the page stays white even if the OS prefers dark. Declaring
@@ -191,21 +193,70 @@ main > *,
   justify-content: center;
 }
 
-/* --- letter reveal ------------------------------------------------
+/* --- word reveal --------------------------------------------------
    Plain text until the inline splitter runs, so no-JS still reads.
+   --stagger, --dur and --delay are all set by js/reveal.js, which owns the
+   timings so the two files can't drift apart.
    ------------------------------------------------------------------ */
 
 [data-split] .reveal__word { display: inline-block; white-space: nowrap; }
 
-[data-split="done"] .reveal__char {
-  display: inline-block;
-  animation: char-in 0.62s var(--ease) both;
-  animation-delay: calc(var(--i) * 26ms);
+[data-split="done"] .reveal__word {
+  animation: word-in var(--dur, 850ms) var(--ease-soft) both;
+  animation-delay: calc(var(--i) * var(--stagger, 105ms));
 }
 
-@keyframes char-in {
-  from { opacity: 0; transform: translateY(0.42em) rotate(2deg); }
+/* Easing out of a blur is what stops it reading as a hard slide. */
+@keyframes word-in {
+  from { opacity: 0; transform: translateY(0.32em); filter: blur(8px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+
+/* The paragraph arrives whole, once the heading has finished. */
+[data-reveal="after"] {
+  animation: paragraph-in 900ms var(--ease-soft) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes paragraph-in {
+  from { opacity: 0; transform: translateY(0.5rem); }
   to   { opacity: 1; transform: none; }
+}
+
+/* --- pointer bubble ----------------------------------------------
+   Positioned by js/cursor.js. The negative margins centre it on the
+   pointer, so the script only has to set a translate.
+   ------------------------------------------------------------------ */
+
+.cursor-bubble {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 2.5rem;
+  height: 2.5rem;
+  margin: -1.25rem 0 0 -1.25rem;
+  border-radius: 50%;
+  z-index: 100;
+  opacity: 0;
+  /* Must never intercept a click or a hover. */
+  pointer-events: none;
+  background: radial-gradient(circle at 34% 28%,
+    rgb(255 255 255 / 0.82),
+    rgb(46 0 212 / 0.17) 55%,
+    rgb(46 0 212 / 0.09));
+  border: 1px solid rgb(46 0 212 / 0.14);
+  box-shadow: 0 6px 20px rgb(38 42 54 / 0.13), inset 0 0 14px rgb(255 255 255 / 0.42);
+  backdrop-filter: blur(3px) saturate(170%);
+  -webkit-backdrop-filter: blur(3px) saturate(170%);
+  transition: opacity 0.35s var(--ease);
+  will-change: transform;
+}
+
+.cursor-bubble.is-visible { opacity: 1; }
+
+/* No pointer to follow, or motion is unwelcome — never show it. */
+@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
+  .cursor-bubble { display: none; }
 }
 
 /* --- buttons ------------------------------------------------------ */
@@ -365,6 +416,37 @@ main > *,
 }
 
 /* --- project case study ------------------------------------------- */
+
+/* Case-study pages are left-aligned rather than centred like the rest of the
+   site, so the long image-led scroll has a consistent left edge to read down. */
+.case { text-align: left; }
+
+.case .hero__title,
+.case .hero__body,
+.case .prose > *,
+.case .case-question { margin-inline: 0; }
+
+.case .section-head { align-items: flex-start; }
+
+/* The homepage hero needs a lot of air; a case study opening does not. */
+.case .hero { padding-block: clamp(2rem, 5vw, 3.25rem) clamp(1.5rem, 4vw, 2.5rem); }
+
+/* Edge to edge. `main > *` already stretches this element's border box across
+   the viewport and insets its contents with padding, so zeroing that padding
+   is all that's needed — a negative margin would shift the box instead of
+   widening it, because max-width: 100% stops it growing back. */
+.bleed { padding-inline: 0; }
+
+/* The hero shot: first thing on the page, full width, no rounding. */
+.case-hero {
+  margin-block: 0;
+  padding-bottom: clamp(2.5rem, 6vw, 4.5rem);
+}
+
+.case-hero img {
+  width: 100%;
+  border-radius: 0;
+}
 
 /* Spec row — Duration / Industry / Skills. */
 .case-meta {

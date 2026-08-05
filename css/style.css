@@ -145,7 +145,8 @@ main > *,
 
 /* --- hero --------------------------------------------------------- */
 
-.hero { padding-block: clamp(3.5rem, 11vw, 8rem) clamp(3rem, 8vw, 5.5rem); }
+/* Generous gap below the intro before the work begins. */
+.hero { padding-block: clamp(3.5rem, 11vw, 8rem) clamp(5.5rem, 14vw, 10rem); }
 
 .hero__title {
   max-width: 22ch;
@@ -234,7 +235,8 @@ main > *,
 
 /* --- section header rows ------------------------------------------ */
 
-/* Stacked and centred: label over title over link. */
+/* Stacked and centred: label over title over link. No rule — the page uses
+   whitespace rather than hairlines to separate sections. */
 .section-head {
   display: flex;
   flex-direction: column;
@@ -242,7 +244,6 @@ main > *,
   gap: 0.4rem;
   margin-bottom: clamp(1.5rem, 4vw, 2.5rem);
   padding-top: clamp(1.5rem, 4vw, 2.25rem);
-  border-top: 1px solid var(--rule);
 }
 
 .section-head__label,
@@ -267,36 +268,20 @@ main > *,
 
 .work { padding-bottom: clamp(3rem, 8vw, 6rem); }
 
-/* The work section has no header row, so the grid carries the divider that
-   used to sit on .section-head. It lives inside .work's inline padding, so
-   the hairline lines up with the ones above the About block and footer. */
 .grid {
   display: grid;
-  gap: clamp(2rem, 5vw, 3.5rem) clamp(1.25rem, 3vw, 2rem);
+  gap: clamp(2.5rem, 6vw, 4.5rem) clamp(1.5rem, 3vw, 2.5rem);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 26rem), 1fr));
-  padding-top: clamp(1.75rem, 4vw, 2.5rem);
-  border-top: 1px solid var(--rule);
 }
 
-/* Image with its title alongside, to the right. min-width:0 on both tracks
-   stops the flex items refusing to shrink below their content width. */
+/* Image full width of its column, title sitting beneath it on the left. */
 .project {
   margin: 0;
   position: relative;
-  display: flex;
-  align-items: center;
-  gap: clamp(0.9rem, 2vw, 1.5rem);
   text-align: left;
 }
 
-.project__media { flex: 2.4 1 0; min-width: 0; }
-.project__body  { flex: 1 1 0;   min-width: 0; }
-
-/* Too little room to sit side by side — stack instead. */
-@media (max-width: 34rem) {
-  .project { display: block; text-align: center; }
-  .project__body { padding-top: 1rem; }
-}
+.project__body { padding-top: 0.9rem; }
 
 .project__media {
   position: relative;
@@ -449,37 +434,37 @@ main > *,
   color: var(--ink-soft);
 }
 
+/* Spacing instead of hairlines between rows. */
 .list-plain li {
-  padding: 0.6rem 0;
-  border-bottom: 1px solid var(--rule);
+  padding: 0.4rem 0;
   font-size: var(--step-sm);
   font-weight: 300;
 }
-
-.list-plain li:first-child { border-top: 1px solid var(--rule); }
 
 /* --- footer ------------------------------------------------------- */
 
 .site-footer { padding-block: 0 clamp(1.5rem, 4vw, 2rem); }
 
-/* Rules sit inside the gutter so they line up with .section-head above. */
+/* Pitch on the left, link columns on the right — edge-aligned rather than
+   stacked in the middle, so the footer reads as a band instead of a pile.
+   Wraps to a stack when there isn't room for both. */
 .site-footer__top {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
   gap: clamp(2rem, 5vw, 3rem);
-  padding-top: clamp(2.5rem, 6vw, 4rem);
+  padding-top: clamp(3.5rem, 9vw, 6rem);
   margin-bottom: clamp(2rem, 6vw, 3.5rem);
-  border-top: 1px solid var(--rule);
+  text-align: left;
 }
 
 /* 404 has no __top block — keep its footer off the content above. */
-.site-footer__top + .site-footer__bottom { padding-top: clamp(1.25rem, 3vw, 1.75rem); }
-.site-footer > .site-footer__bottom:first-child { margin-top: clamp(2.5rem, 6vw, 4rem); }
+.site-footer > .site-footer__bottom:first-child { margin-top: clamp(3rem, 8vw, 5rem); }
 
 .site-footer__pitch {
-  max-width: 26ch;
-  margin: 0.75rem auto 0;
+  max-width: 24ch;
+  margin: 0.6rem 0 0;
   font-size: var(--step-lg);
   font-weight: 400;
   line-height: 1.12;
@@ -490,8 +475,8 @@ main > *,
 .footer-nav {
   display: flex;
   flex-wrap: wrap;
-  gap: 2rem 3.5rem;
-  justify-content: center;
+  gap: 1.5rem clamp(2.5rem, 5vw, 4.5rem);
+  justify-content: flex-start;
 }
 
 .footer-nav ul {
@@ -511,16 +496,17 @@ main > *,
 
 .footer-nav a:hover { color: var(--ink); }
 
+/* Copyright far left, location far right. */
 .site-footer__bottom {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem 1.5rem;
-  justify-content: center;
+  justify-content: space-between;
   align-items: baseline;
   padding-top: clamp(1.25rem, 3vw, 1.75rem);
-  border-top: 1px solid var(--rule);
   font-size: var(--step-xs);
   color: var(--ink-faint);
+  text-align: left;
 }
 
 .site-footer__bottom p { margin: 0; }

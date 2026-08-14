@@ -11,6 +11,7 @@
   --paper:      #ffffff;
   --rule:       #e4e7ed;
   --accent:     #2e00d4;
+  --hot-pink:   #e0116f;
 
   --measure:    52ch;
   /* Full-bleed: the layout spans the viewport, held off the edges only by the
@@ -253,6 +254,11 @@ main > *,
   white-space: nowrap;
   border: 0;
 }
+
+/* "industrial designer" in hot pink. #e0116f rather than the CSS `hotpink`
+   keyword, which only reaches 2.65:1 on white — well under the 4.5:1 needed
+   to stay readable. This one measures 4.69:1 and still reads hot pink. */
+.hero__body--intro em { color: var(--hot-pink); }
 
 /* No heading above it any more, so the intro line fades in on its own. */
 .hero__body--intro {

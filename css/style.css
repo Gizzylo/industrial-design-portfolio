@@ -422,8 +422,6 @@ main > *,
    to stay readable. This one measures 4.69:1 and still reads hot pink. */
 .hero__body--intro em {
   color: var(--hot-pink);
-  /* inline-block so it can be transformed at all; it also keeps the two words
-     together on one line rather than letting the phrase break mid-inflate. */
   display: inline-block;
   transform-origin: center center;
   /* A little room on each side to inflate into. A transform does not reflow
@@ -431,12 +429,28 @@ main > *,
      words either side of it. */
   padding-inline: 0.22em;
   margin-inline: -0.06em;
+  /* Never stops — a slow sway, small enough to notice without nagging. */
+  animation: designer-sway 3.4s ease-in-out infinite;
+}
+
+/* The scale lives on an inner span: the em is already animating transform,
+   and an animation beats a transition on the same property, so the hover
+   would never take effect if both sat on one element. */
+.hero__body--intro em > span {
+  display: inline-block;
+  transform-origin: center center;
   /* Overshoots past 1 before settling — that slight bounce is what reads as
      inflating rather than simply scaling. */
   transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.hero__body--intro em:hover { transform: scale(1.07); }
+.hero__body--intro em:hover > span { transform: scale(1.07); }
+
+@keyframes designer-sway {
+  0%, 100% { transform: translate(0, 0) rotate(-1.5deg); }
+  33%      { transform: translate(1px, -2px) rotate(1.5deg); }
+  66%      { transform: translate(-1px, 1px) rotate(0.5deg); }
+}
 
 /* No heading above it any more, so the intro line fades in on its own. It is
    also the only copy on the first screen, so it is set larger than the rest.

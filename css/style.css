@@ -743,6 +743,17 @@ main > *,
 
 .case .section-head { align-items: flex-start; }
 
+/* Title and subtitle read as normal ink; only the descriptions under them go
+   light grey. #6f7787 is the lightest grey that still clears 4.5:1 against
+   white — --ink-faint (#8b91a0) is visibly lighter but only manages 3.16:1,
+   which is under the bar for body-size copy. */
+.case .hero__title,
+.case .hero__body,
+.case .section-head__title { color: var(--ink); }
+
+.case .prose p,
+.case .prose li { color: #6f7787; }
+
 /* The spec row now sits directly above and supplies the gap, so no top padding
    here — otherwise the two paddings stack into a gulf. */
 .case .hero { padding-block: 0 clamp(1.5rem, 4vw, 2.5rem); }

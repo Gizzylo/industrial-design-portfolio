@@ -435,7 +435,8 @@ main > *,
    keep adding columns and shrink the images again. */
 .grid {
   display: grid;
-  gap: clamp(2rem, 5vw, 3.5rem) clamp(1rem, 1.8vw, 1.5rem);
+  /* One value: the gap between rows matches the gap between columns. */
+  gap: clamp(1rem, 1.8vw, 1.5rem);
   grid-template-columns: 1fr;
 }
 

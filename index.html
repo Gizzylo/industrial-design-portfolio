@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=18">
+  <link rel="stylesheet" href="css/style.css?v=23">
 </head>
 <body>
   <a class="skip-link" href="#work">Skip to work</a>
@@ -36,11 +36,19 @@
     <!-- HERO — the h1 is split into words by js/reveal.js. Keep it plain
          text here; the splitter reads it and rebuilds it. -->
     <section class="hero">
-      <h1 class="hero__title" data-split="words">Hello! I'm Cindy Lopez</h1>
-      <p class="hero__body">
+      <!-- The greeting is gone from view, but the page still needs one h1 for
+           search engines and screen readers. -->
+      <h1 class="visually-hidden">Cindy Lopez — Industrial Design</h1>
+      <p class="hero__body hero__body--intro">
         I'm an <em>industrial designer</em> in the Bay Area, working across product form,
         mechanism, and manufacture — from first sketch to production-ready part.
       </p>
+      <a class="scroll-cue" href="#work" aria-label="Scroll to the work">
+        <svg width="24" height="34" viewBox="0 0 24 34" aria-hidden="true" focusable="false">
+          <path d="M12 2 V30 M4 22 L12 30 L20 22" fill="none" stroke="currentColor"
+                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
     </section>
 
     <!-- PROJECTS — four slots. Duplicate an <article> to add a fifth.
@@ -124,6 +132,6 @@
     </div>
   </footer>
 
-  <script src="js/reveal.js?v=18"></script>
+  <script src="js/reveal.js?v=23"></script>
 </body>
 </html>

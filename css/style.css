@@ -80,6 +80,57 @@ a { color: inherit; }
   border-radius: 2px;
 }
 
+/* --- edge blur ----------------------------------------------------
+   Fixed bands at the top and bottom of the viewport that blur whatever
+   scrolls under them, so content softens as it reaches the edges rather than
+   being cut off. The mask fades each band out towards the middle of the page,
+   which is what stops it looking like a hard strip.
+
+   z-index sits below the sticky header (10) so the header stays crisp, and
+   pointer-events: none keeps the bands from swallowing clicks.
+   ------------------------------------------------------------------ */
+
+/* The bottom band is fixed to the viewport. The top one cannot be — the
+   sticky header is opaque and sits above it, so a viewport-anchored band was
+   simply hidden behind the header. Anchoring it to the header instead puts it
+   directly underneath at whatever height the header happens to be. */
+
+body::after {
+  content: "";
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: clamp(3.5rem, 9vh, 6.5rem);
+  z-index: 9;
+  pointer-events: none;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  mask-image: linear-gradient(to top, #000 35%, transparent);
+  -webkit-mask-image: linear-gradient(to top, #000 35%, transparent);
+}
+
+.site-header::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: clamp(2.5rem, 6vh, 4.5rem);
+  pointer-events: none;
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  mask-image: linear-gradient(to bottom, #000 30%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+}
+
+/* No backdrop-filter support means no bands at all, rather than two grey
+   strips sitting over the content. */
+@supports not (backdrop-filter: blur(1px)) {
+  body::after,
+  .site-header::after { display: none; }
+}
+
 /* --- shared layout ------------------------------------------------ */
 
 .site-header,
@@ -118,16 +169,17 @@ main > *,
   color: var(--ink);
 }
 
-/* A CAD-sketch monogram: an open C arc with an L nested inside it, both at one
-   stroke weight, plus a centre datum tick. Strokes inherit currentColor. */
+/* The mark: an open C arc that doubles as a face, with two eyes and a smile.
+   Everything inherits currentColor. */
 .logo {
   display: block;
-  width: clamp(1.75rem, 1.5rem + 0.8vw, 2.15rem);
+  width: clamp(2.45rem, 2.1rem + 1.1vw, 3rem);
   height: auto;
 }
 
 .logo path,
-.logo line {
+.logo line,
+.logo circle {
   fill: none;
   stroke: currentColor;
   stroke-width: 3.1;
@@ -135,20 +187,96 @@ main > *,
   stroke-linejoin: round;
 }
 
-/* The datum tick is hairline, like a centre mark on a drawing. */
-.logo .logo__datum {
-  stroke-width: 1.4;
-  opacity: 0.45;
+/* Filled, not stroked. `.logo circle` is more specific than a bare class, so
+   these need the extra .logo to win. */
+.logo .logo__eye {
+  fill: currentColor;
+  stroke: none;
 }
 
-/* The C turns like a dial on hover; the L holds still. */
-.logo .logo__c {
-  transform-box: fill-box;
+/* Lighter than the C, so the face reads before the ring does. */
+.logo .logo__smile { stroke-width: 2.4; }
+
+/* The whole face tilts on hover, like a head cocked to one side. */
+.logo {
   transform-origin: center;
-  transition: transform 0.55s var(--ease-soft);
+  transition: transform 0.5s var(--ease-soft);
 }
 
-.nav__name:hover .logo__c { transform: rotate(-24deg); }
+/* --- the wink -----------------------------------------------------
+   Hover, click and keyboard focus all trigger it, so it is not
+   mouse-only. The closed eye and the tongue are in the markup from the
+   start and simply fade/scale in — nothing is injected. ------------- */
+
+.logo__wink,
+.logo__tongue,
+.logo__hand { opacity: 0; }
+
+/* Nothing at rest; the hand waves in on hover. */
+/* Palm and thumb are both filled; the generic `.logo circle`/`path` rule sets
+   fill:none, so these need the extra .logo to win on specificity. */
+.logo .logo__hand rect,
+.logo .logo__hand path {
+  fill: currentColor;
+  stroke: none;
+}
+
+.logo__hand {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+}
+
+.logo__hand { transition: opacity 0.2s var(--ease); }
+
+.nav__name:hover .logo__hand,
+.nav__name:active .logo__hand,
+.nav__name:focus-visible .logo__hand {
+  opacity: 1;
+  animation: hand-wave 0.72s ease-in-out 3;
+}
+
+@keyframes hand-wave {
+  0%, 100% { transform: rotate(0deg); }
+  25%      { transform: rotate(17deg); }
+  75%      { transform: rotate(-17deg); }
+}
+
+.logo__tongue {
+  fill: currentColor;
+  stroke: none;
+  /* Unrolls from the mouth corner it hangs off, not from its own centre. */
+  transform: scale(0.25);
+  transform-box: fill-box;
+  transform-origin: top right;
+}
+
+.logo__eye--right,
+.logo__wink,
+.logo__tongue {
+  transition: opacity 0.22s var(--ease), transform 0.32s var(--ease-soft);
+}
+
+.nav__name:hover .logo,
+.nav__name:active .logo,
+.nav__name:focus-visible .logo { transform: rotate(-10deg); }
+
+.nav__name:hover .logo__eye--right,
+.nav__name:active .logo__eye--right,
+.nav__name:focus-visible .logo__eye--right { opacity: 0; }
+
+.nav__name:hover .logo__wink,
+.nav__name:active .logo__wink,
+.nav__name:focus-visible .logo__wink { opacity: 1; }
+
+.nav__name:hover .logo__tongue,
+.nav__name:active .logo__tongue,
+.nav__name:focus-visible .logo__tongue {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* A bigger tilt and a further-out tongue on the click itself. */
+.nav__name:active .logo { transform: rotate(-16deg); }
 
 .nav__links {
   display: flex;
@@ -330,8 +458,9 @@ main > *,
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    .case-meta,
-    .case-section,
+    /* Parents that animate as one block. .case-section and .case-meta are
+       deliberately absent — their children animate individually below, and
+       animating both would multiply the two opacities together. */
     .case-figure,
     .case-figures,
     .project,
@@ -348,10 +477,48 @@ main > *,
        moment their top edge crosses into view and are still arriving when
        most of the tile is on screen, so the fade tracks the scroll rather
        than snapping. */
-    .project {
-      animation-range: entry 0% entry 88%;
+    .project { animation-range: entry 0% entry 88%; }
+
+    /* --- staggered arrivals ---------------------------------------
+       Scroll-driven animations have no delay to stagger with: progress is
+       tied to position, not time. The offset comes from starting each item's
+       range slightly later instead, so they arrive in sequence as you scroll.
+       --------------------------------------------------------------- */
+
+    .case-meta > div,
+    .case-section .section-head,
+    .case-section .prose {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+    }
+
+    /* Duration / Industry / Skills / Role, one after another. */
+    .case-meta > div:nth-child(1) { animation-range: entry 4%  entry 44%; }
+    .case-meta > div:nth-child(2) { animation-range: entry 11% entry 51%; }
+    .case-meta > div:nth-child(3) { animation-range: entry 18% entry 58%; }
+    .case-meta > div:nth-child(4) { animation-range: entry 25% entry 65%; }
+
+    /* The heading lands first, its copy just behind it. */
+    .case-section .section-head { animation-range: entry 4%  entry 42%; }
+    .case-section .prose        { animation-range: entry 14% entry 54%; }
+
+    /* --- hero parallax --------------------------------------------
+       The image is already scaled past its frame by object-fit: cover, so it
+       can drift inside .case-hero without exposing an edge. The extra scale
+       is headroom for the travel. --------------------------------- */
+    .case-hero { overflow: hidden; }
+
+    .case-hero img {
+      animation: hero-drift linear both;
+      animation-timeline: view();
+      animation-range: cover;
     }
   }
+}
+
+@keyframes hero-drift {
+  from { transform: translateY(-5%) scale(1.14); }
+  to   { transform: translateY(5%)  scale(1.14); }
 }
 
 @keyframes reveal-up {
@@ -462,6 +629,7 @@ main > *,
   text-align: left;
 }
 
+
 .project__body {
   position: absolute;
   inset: 0;
@@ -500,28 +668,8 @@ main > *,
   transform: scale(1.05);
 }
 
-/* Alternating widths rather than a uniform pair — one tile runs longer than
-   its neighbour, and the pairing flips each row, so the grid reads as
-   editorial rather than as a table. Twelve columns gives the 7/5 split. */
 @media (min-width: 46rem) {
-  .grid {
-    grid-template-columns: repeat(12, 1fr);
-    align-items: start;
-  }
-
-  /* Uniform height with varying width — so the wider tiles read as longer
-     rather than simply bigger. Fixed height replaces the 4:3 ratio here;
-     object-fit: cover on the image handles the differing crops. */
-  .project__media {
-    aspect-ratio: auto;
-    height: clamp(17rem, 25vw, 27rem);
-  }
-
-  .project { grid-column: span 6; }
-  .project:nth-child(4n + 1) { grid-column: span 7; }
-  .project:nth-child(4n + 2) { grid-column: span 5; }
-  .project:nth-child(4n + 3) { grid-column: span 5; }
-  .project:nth-child(4n + 4) { grid-column: span 7; }
+  .grid { grid-template-columns: 1fr 1fr; }
 }
 
 

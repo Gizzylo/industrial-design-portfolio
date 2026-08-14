@@ -260,8 +260,14 @@ main > *,
    to stay readable. This one measures 4.69:1 and still reads hot pink. */
 .hero__body--intro em { color: var(--hot-pink); }
 
-/* No heading above it any more, so the intro line fades in on its own. */
+/* No heading above it any more, so the intro line fades in on its own. It is
+   also the only copy on the first screen, so it is set larger than the rest.
+   The measure tightens from 52ch to 44ch to stop the longer lines running
+   past a comfortable reading width at the bigger size. */
 .hero__body--intro {
+  font-size: clamp(1.25rem, 1rem + 1vw, 1.8rem);
+  line-height: 1.45;
+  max-width: 44ch;
   animation: paragraph-in 1100ms var(--ease-soft) both;
   animation-delay: 180ms;
 }

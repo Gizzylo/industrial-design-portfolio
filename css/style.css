@@ -82,21 +82,15 @@ a { color: inherit; }
 }
 
 /* --- edge blur ----------------------------------------------------
-   Fixed bands at the top and bottom of the viewport that blur whatever
-   scrolls under them, so content softens as it reaches the edges rather than
-   being cut off. The mask fades each band out towards the middle of the page,
-   which is what stops it looking like a hard strip.
+   Content should look like it is dissolving as it reaches the top and bottom
+   of the viewport, not just softening. That needs two things at once, and a
+   single element gives both: backdrop-filter blurs what is behind it, and a
+   paper-coloured gradient painted on top fades it out. Blur alone only ever
+   reads as "out of focus"; the fade is what makes it disappear.
 
-   z-index sits below the sticky header (10) so the header stays crisp, and
-   pointer-events: none keeps the bands from swallowing clicks.
-   ------------------------------------------------------------------ */
-
-/* --- edge blur ----------------------------------------------------
-   Two stacked layers per edge rather than one band. A single blur with a
-   linear mask ends on a visible line, because the blur strength is constant
-   right up to where the mask cuts it. Stacking a wide, light layer under a
-   short, strong one ramps the blur up gradually, and easing the mask stops
-   (rather than a straight linear fade) removes the last of the seam.
+   Two layers per edge — a wide gentle one and a short strong one inside it —
+   so the blur ramps rather than switching on at a line. Mask stops are eased
+   for the same reason.
 
    The top pair is anchored to .site-header, not the viewport: the header is
    opaque and sits above, so viewport-fixed bands were hidden behind it.
@@ -118,52 +112,61 @@ body::after {
 .site-header::before,
 .site-header::after { position: absolute; top: 100%; }
 
-/* Wide and light. */
+body::before,
+body::after { bottom: 0; }
+
+/* Wide and gentle: the start of the ramp. */
 .site-header::before,
 body::before {
-  height: clamp(4.5rem, 11vh, 8rem);
-  backdrop-filter: blur(3px);
-  -webkit-backdrop-filter: blur(3px);
+  height: clamp(5.5rem, 14vh, 10rem);
+  backdrop-filter: blur(2.5px);
+  -webkit-backdrop-filter: blur(2.5px);
 }
 
-/* Short and strong, sitting inside the light one. */
+/* Short and strong, sitting inside the wide one, and carrying most of the
+   fade — this is the band content actually vanishes into. */
 .site-header::after,
 body::after {
-  height: clamp(2.2rem, 5.5vh, 3.8rem);
-  backdrop-filter: blur(9px);
-  -webkit-backdrop-filter: blur(9px);
+  height: clamp(3rem, 7.5vh, 5.25rem);
+  backdrop-filter: blur(11px);
+  -webkit-backdrop-filter: blur(11px);
 }
 
-/* Eased stops — a plain linear fade leaves a faint band edge. */
+/* --paper is white; the alpha steps are what matter here. */
 .site-header::before {
-  mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.72) 34%, rgb(0 0 0 / 0.32) 62%, rgb(0 0 0 / 0.08) 84%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.72) 34%, rgb(0 0 0 / 0.32) 62%, rgb(0 0 0 / 0.08) 84%, transparent 100%);
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.34) 0%, rgb(255 255 255 / 0.12) 45%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.7) 32%, rgb(0 0 0 / 0.3) 60%, rgb(0 0 0 / 0.07) 82%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.7) 32%, rgb(0 0 0 / 0.3) 60%, rgb(0 0 0 / 0.07) 82%, transparent 100%);
 }
 
 .site-header::after {
-  mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.6) 40%, rgb(0 0 0 / 0.2) 72%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.6) 40%, rgb(0 0 0 / 0.2) 72%, transparent 100%);
+  background: linear-gradient(to bottom, rgb(255 255 255 / 0.95) 0%, rgb(255 255 255 / 0.62) 38%, rgb(255 255 255 / 0.22) 70%, transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.62) 42%, rgb(0 0 0 / 0.22) 72%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.62) 42%, rgb(0 0 0 / 0.22) 72%, transparent 100%);
 }
 
 body::before {
-  bottom: 0;
-  mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.72) 34%, rgb(0 0 0 / 0.32) 62%, rgb(0 0 0 / 0.08) 84%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.72) 34%, rgb(0 0 0 / 0.32) 62%, rgb(0 0 0 / 0.08) 84%, transparent 100%);
+  background: linear-gradient(to top, rgb(255 255 255 / 0.34) 0%, rgb(255 255 255 / 0.12) 45%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.7) 32%, rgb(0 0 0 / 0.3) 60%, rgb(0 0 0 / 0.07) 82%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.7) 32%, rgb(0 0 0 / 0.3) 60%, rgb(0 0 0 / 0.07) 82%, transparent 100%);
 }
 
 body::after {
-  bottom: 0;
-  mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.6) 40%, rgb(0 0 0 / 0.2) 72%, transparent 100%);
-  -webkit-mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.6) 40%, rgb(0 0 0 / 0.2) 72%, transparent 100%);
+  background: linear-gradient(to top, rgb(255 255 255 / 0.95) 0%, rgb(255 255 255 / 0.62) 38%, rgb(255 255 255 / 0.22) 70%, transparent 100%);
+  mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.62) 42%, rgb(0 0 0 / 0.22) 72%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.62) 42%, rgb(0 0 0 / 0.22) 72%, transparent 100%);
 }
 
-/* No backdrop-filter support means no bands at all, rather than grey strips
-   sitting over the content. */
+/* Without backdrop-filter the fade still works on its own, so the bands stay
+   — they just stop blurring. */
 @supports not (backdrop-filter: blur(1px)) {
   .site-header::before,
   .site-header::after,
   body::before,
-  body::after { display: none; }
+  body::after {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
 }
 
 /* --- shared layout ------------------------------------------------ */

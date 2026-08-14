@@ -108,15 +108,46 @@ main > *,
   gap: 0.75rem 1rem;
 }
 
-/* "CL" monogram, left. Same Fustat as the rest of the page, bold. */
+/* Logo mark, left. The link carries the accessible name; the SVG is decorative. */
 .nav__name {
-  font-family: var(--sans);
-  font-size: clamp(1.0625rem, 1rem + 0.4vw, 1.25rem);
-  font-weight: 700;
-  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
   line-height: 1;
   text-decoration: none;
+  color: var(--ink);
 }
+
+/* A CAD-sketch monogram: an open C arc with an L nested inside it, both at one
+   stroke weight, plus a centre datum tick. Strokes inherit currentColor. */
+.logo {
+  display: block;
+  width: clamp(1.75rem, 1.5rem + 0.8vw, 2.15rem);
+  height: auto;
+}
+
+.logo path,
+.logo line {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3.1;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* The datum tick is hairline, like a centre mark on a drawing. */
+.logo .logo__datum {
+  stroke-width: 1.4;
+  opacity: 0.45;
+}
+
+/* The C turns like a dial on hover; the L holds still. */
+.logo .logo__c {
+  transform-box: fill-box;
+  transform-origin: center;
+  transition: transform 0.55s var(--ease-soft);
+}
+
+.nav__name:hover .logo__c { transform: rotate(-24deg); }
 
 .nav__links {
   display: flex;
@@ -214,7 +245,7 @@ main > *,
 
 /* The paragraph arrives whole, once the heading has finished. */
 [data-reveal="after"] {
-  animation: paragraph-in 900ms var(--ease-soft) both;
+  animation: paragraph-in var(--para-dur, 1260ms) var(--ease-soft) both;
   animation-delay: var(--delay, 0ms);
 }
 

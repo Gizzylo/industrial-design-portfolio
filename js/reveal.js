@@ -12,8 +12,10 @@
 (function () {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  var STAGGER = 105;  // ms between one word starting and the next
-  var DURATION = 850; // ms for a single word to arrive
+  /* 40% slower than the first pass (was 105 / 850 / 900). */
+  var STAGGER = 147;   // ms between one word starting and the next
+  var DURATION = 1190; // ms for a single word to arrive
+  var PARAGRAPH = 1260; // ms for the paragraph beneath to fade up
 
   document.querySelectorAll('[data-split="words"]').forEach(function (el) {
     var text = el.textContent.replace(/\s+/g, ' ').trim();
@@ -43,6 +45,7 @@
     var body = el.parentElement && el.parentElement.querySelector('.hero__body');
     if (body) {
       body.style.setProperty('--delay', (words.length - 1) * STAGGER + DURATION + 'ms');
+      body.style.setProperty('--para-dur', PARAGRAPH + 'ms');
       body.setAttribute('data-reveal', 'after');
     }
   });

@@ -224,6 +224,23 @@ main > *,
   justify-content: center;
 }
 
+/* Homepage only: the intro owns the first screen, so the work starts below
+   the fold and has to be scrolled to. 100svh rather than vh so mobile browser
+   chrome cannot push the tiles into view. The subtraction is the sticky
+   header, which sits in flow above this. */
+.hero--full {
+  /* Subtracting less than the header's real height is deliberate: the header
+     ranges from ~63px on phones to ~85px on desktop, and any subtraction at
+     or above that leaves the first tile peeking over the fold. This keeps
+     hero + header just past the viewport at every size. */
+  min-height: calc(100svh - 3rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding-block: clamp(2rem, 5vw, 3rem);
+}
+
 /* Available to screen readers and search engines, invisible on screen. */
 .visually-hidden {
   position: absolute;
@@ -312,6 +329,14 @@ main > *,
 
     /* A pair animates as one block; its figures must not animate again. */
     .case-figures .case-figure { animation: none; }
+
+    /* The work tiles come in more slowly than everything else: they start the
+       moment their top edge crosses into view and are still arriving when
+       most of the tile is on screen, so the fade tracks the scroll rather
+       than snapping. */
+    .project {
+      animation-range: entry 0% entry 88%;
+    }
   }
 }
 
@@ -414,10 +439,6 @@ main > *,
   grid-template-columns: 1fr;
 }
 
-@media (min-width: 46rem) {
-  .grid { grid-template-columns: 1fr 1fr; }
-}
-
 /* Image full width of its column; the title sits centred on top of it and
    only appears on hover. */
 .project {
@@ -463,6 +484,31 @@ main > *,
   filter: blur(7px);
   transform: scale(1.05);
 }
+
+/* Alternating widths rather than a uniform pair — one tile runs longer than
+   its neighbour, and the pairing flips each row, so the grid reads as
+   editorial rather than as a table. Twelve columns gives the 7/5 split. */
+@media (min-width: 46rem) {
+  .grid {
+    grid-template-columns: repeat(12, 1fr);
+    align-items: start;
+  }
+
+  /* Uniform height with varying width — so the wider tiles read as longer
+     rather than simply bigger. Fixed height replaces the 4:3 ratio here;
+     object-fit: cover on the image handles the differing crops. */
+  .project__media {
+    aspect-ratio: auto;
+    height: clamp(17rem, 25vw, 27rem);
+  }
+
+  .project { grid-column: span 6; }
+  .project:nth-child(4n + 1) { grid-column: span 7; }
+  .project:nth-child(4n + 2) { grid-column: span 5; }
+  .project:nth-child(4n + 3) { grid-column: span 5; }
+  .project:nth-child(4n + 4) { grid-column: span 7; }
+}
+
 
 /* Delete .project__placeholder once real images go in. */
 .project__placeholder {

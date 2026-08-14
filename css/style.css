@@ -28,6 +28,7 @@
 
   --sans:   "Fustat", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --serif:  "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
+  --bubbly: "Fredoka", "Baloo 2", ui-rounded, system-ui, sans-serif;
 
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   /* Long, decelerating tail — the "smooth" in the hero reveal. */
@@ -989,6 +990,91 @@ main > *,
   font-weight: 300;
   color: var(--ink-soft);
   text-wrap: pretty;
+}
+
+/* --- bubbly (about page) ------------------------------------------
+   A stand-in for Nicky Laatz's "Pink Sugar" 3D bubble font, which is a paid
+   licence and not bundled here. Fredoka gives the rounded, inflated
+   letterforms; the candy gloss comes from a vertical pink gradient clipped to
+   the text, with stacked drop-shadows for the 3D lift. Swap --bubbly for the
+   real face if the licence is bought — nothing else needs to change.
+
+   Scoped to .bubbly so the rest of the site keeps its type.
+   ------------------------------------------------------------------ */
+
+.bubbly .hero__title,
+.bubbly .prose h2,
+.bubbly .section-head__title {
+  font-family: var(--bubbly);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-transform: none;
+  background: linear-gradient(178deg,
+    #ffb3d9 0%,
+    #ff74b8 38%,
+    #f0338c 68%,
+    #c60f63 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* drop-shadow rather than text-shadow — text-shadow paints behind the box,
+     not the glyphs, once the fill is a clipped gradient. */
+  filter:
+    drop-shadow(0 2px 0 rgb(158 8 78 / 0.32))
+    drop-shadow(0 9px 16px rgb(224 17 111 / 0.22));
+}
+
+.bubbly .hero__title {
+  font-size: clamp(2.6rem, 1.6rem + 4.4vw, 4.4rem);
+  line-height: 1.02;
+}
+
+.bubbly .prose h2 {
+  font-size: clamp(1.35rem, 1.1rem + 1vw, 1.9rem);
+  letter-spacing: 0;
+  color: transparent;
+  margin-bottom: 0.5rem;
+}
+
+/* Capabilities become sugared pills. */
+.bubbly .list-plain {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem;
+  max-width: none;
+}
+
+.bubbly .list-plain li {
+  padding: 0.5rem 1.05rem;
+  border-radius: 999px;
+  background: #ffeaf4;
+  color: #b70d5c;
+  font-family: var(--bubbly);
+  font-weight: 500;
+  font-size: var(--step-sm);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+              background-color 0.35s var(--ease);
+}
+
+.bubbly .list-plain li:hover {
+  transform: translateY(-3px) scale(1.05);
+  background: #ffd9ec;
+}
+
+/* The buttons pick up the candy too. */
+.bubbly .button {
+  font-family: var(--bubbly);
+  font-weight: 500;
+  background: linear-gradient(178deg, #ff74b8, #d1156e);
+  border-color: transparent;
+  color: #fff;
+}
+
+.bubbly .button--ghost {
+  background: #fff;
+  color: #c60f63;
+  border-color: #ffc2de;
 }
 
 /* --- prose (about page) ------------------------------------------- */

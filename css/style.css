@@ -99,7 +99,9 @@ body::after {
   position: fixed;
   left: 0;
   right: 0;
-  height: clamp(5rem, 13vh, 9rem);
+  /* Three quarters of the previous run — every value scaled by 0.75 so the
+     band shortens evenly at any viewport height, not just at the clamp ends. */
+  height: clamp(3.75rem, 9.75vh, 6.75rem);
   z-index: 9;
   pointer-events: none;
 }

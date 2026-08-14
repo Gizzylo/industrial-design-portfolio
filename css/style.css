@@ -733,8 +733,30 @@ main > *,
   transform: scale(1.05);
 }
 
+/* Alternating widths: wide + narrow on one row, narrow + wide on the next, so
+   the pairing flips as you go down. Twelve columns gives the 7/5 split.
+
+   This block must stay below .project__media's aspect-ratio rule — a media
+   query adds no specificity, so declared earlier it would silently lose and
+   the tiles would come out uniform. */
 @media (min-width: 46rem) {
-  .grid { grid-template-columns: 1fr 1fr; }
+  .grid {
+    grid-template-columns: repeat(12, 1fr);
+    align-items: start;
+  }
+
+  /* Equal height, varying width — otherwise the wider tile is also taller and
+     the rows go ragged. object-fit: cover handles the differing crops. */
+  .project__media {
+    aspect-ratio: auto;
+    height: clamp(17rem, 25vw, 27rem);
+  }
+
+  .project { grid-column: span 6; }
+  .project:nth-child(4n + 1) { grid-column: span 7; }  /* row 1 left  — wide */
+  .project:nth-child(4n + 2) { grid-column: span 5; }  /* row 1 right — narrow */
+  .project:nth-child(4n + 3) { grid-column: span 5; }  /* row 2 left  — narrow */
+  .project:nth-child(4n + 4) { grid-column: span 7; }  /* row 2 right — wide */
 }
 
 

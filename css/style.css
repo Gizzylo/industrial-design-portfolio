@@ -81,55 +81,6 @@ a { color: inherit; }
   border-radius: 2px;
 }
 
-/* --- edge fade ----------------------------------------------------
-   No blur at all now — just a paper-coloured gradient at each edge, so images
-   and words dissolve into the page as they scroll away. Dropping
-   backdrop-filter also drops everything that existed to support it: the
-   second layer per edge, the masks, and the @supports fallback. The gradient
-   fades to transparent on its own, so a mask has nothing left to do.
-
-   The top band is anchored to .site-header, not the viewport: the header is
-   opaque and sits above, so a viewport-fixed band was hidden behind it.
-   pointer-events: none so neither band eats a click.
-   ------------------------------------------------------------------ */
-
-.site-header::after,
-body::after {
-  content: "";
-  position: fixed;
-  left: 0;
-  right: 0;
-  /* Halved again — a shallow fade right at the edge rather than a long ramp.
-     All three clamp values scale together so it shortens evenly at any
-     viewport height, not just in the middle of the range. */
-  height: clamp(1.9rem, 4.9vh, 3.4rem);
-  z-index: 9;
-  pointer-events: none;
-}
-
-/* --paper is white; the alpha steps are what matter. Full paper at the very
-   edge, easing off so there is no line where the band stops. */
-.site-header::after {
-  position: absolute;
-  top: 100%;
-  background: linear-gradient(to bottom,
-    rgb(255 255 255 / 1) 0%,
-    rgb(255 255 255 / 0.78) 26%,
-    rgb(255 255 255 / 0.42) 52%,
-    rgb(255 255 255 / 0.14) 76%,
-    transparent 100%);
-}
-
-body::after {
-  bottom: 0;
-  background: linear-gradient(to top,
-    rgb(255 255 255 / 1) 0%,
-    rgb(255 255 255 / 0.78) 26%,
-    rgb(255 255 255 / 0.42) 52%,
-    rgb(255 255 255 / 0.14) 76%,
-    transparent 100%);
-}
-
 /* --- shared layout ------------------------------------------------ */
 
 .site-header,
@@ -487,54 +438,44 @@ main > *,
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
-    /* Parents that animate as one block. .case-section and .case-meta are
-       deliberately absent — their children animate individually below, and
-       animating both would multiply the two opacities together. */
+    /* One animation over the `cover` range — the whole span from an element
+       first touching the bottom of the viewport to fully clearing the top.
+       Doing it as a single animation matters: two animations both touching
+       opacity would fight, because the second one's fill state overrides the
+       first before its own range even begins.
+
+       .case-section and .case-meta are absent on purpose; their children
+       animate individually below, and animating both would multiply the two
+       opacities together. */
     .case-figure,
     .case-figures,
     .project,
-    .site-footer__top {
-      animation: reveal-up linear both;
+    .site-footer__top,
+    .case-meta > div,
+    .case-section .section-head,
+    .case-section .prose {
+      animation: drift-through linear both;
       animation-timeline: view();
-      animation-range: entry 4% entry 46%;
+      animation-range: cover 0% cover 100%;
     }
 
     /* A pair animates as one block; its figures must not animate again. */
     .case-figures .case-figure { animation: none; }
 
-    /* The work tiles come in more slowly than everything else: they start the
-       moment their top edge crosses into view and are still arriving when
-       most of the tile is on screen, so the fade tracks the scroll rather
-       than snapping. */
-    .project { animation-range: entry 0% entry 88%; }
+    /* Staggered arrivals. Scroll-driven animations have no delay to stagger
+       with — progress is tied to position, not time — so the offset comes
+       from starting each item's range slightly later instead. */
+    .case-meta > div:nth-child(1) { animation-range: cover 1%  cover 100%; }
+    .case-meta > div:nth-child(2) { animation-range: cover 4%  cover 100%; }
+    .case-meta > div:nth-child(3) { animation-range: cover 7%  cover 100%; }
+    .case-meta > div:nth-child(4) { animation-range: cover 10% cover 100%; }
 
-    /* --- staggered arrivals ---------------------------------------
-       Scroll-driven animations have no delay to stagger with: progress is
-       tied to position, not time. The offset comes from starting each item's
-       range slightly later instead, so they arrive in sequence as you scroll.
-       --------------------------------------------------------------- */
+    .case-section .section-head { animation-range: cover 1% cover 100%; }
+    .case-section .prose        { animation-range: cover 5% cover 100%; }
 
-    .case-meta > div,
-    .case-section .section-head,
-    .case-section .prose {
-      animation: reveal-up linear both;
-      animation-timeline: view();
-    }
-
-    /* Duration / Industry / Skills / Role, one after another. */
-    .case-meta > div:nth-child(1) { animation-range: entry 4%  entry 44%; }
-    .case-meta > div:nth-child(2) { animation-range: entry 11% entry 51%; }
-    .case-meta > div:nth-child(3) { animation-range: entry 18% entry 58%; }
-    .case-meta > div:nth-child(4) { animation-range: entry 25% entry 65%; }
-
-    /* The heading lands first, its copy just behind it. */
-    .case-section .section-head { animation-range: entry 4%  entry 42%; }
-    .case-section .prose        { animation-range: entry 14% entry 54%; }
-
-    /* --- hero parallax --------------------------------------------
+    /* --- hero parallax ---------------------------------------------
        The image is already scaled past its frame by object-fit: cover, so it
-       can drift inside .case-hero without exposing an edge. The extra scale
-       is headroom for the travel. --------------------------------- */
+       can drift inside .case-hero without exposing an edge. --------- */
     .case-hero { overflow: hidden; }
 
     .case-hero img {
@@ -545,14 +486,18 @@ main > *,
   }
 }
 
+/* In at the start, held solid through the middle, out at the end. The wide
+   hold is what keeps things readable while you are actually looking at them. */
+@keyframes drift-through {
+  0%   { opacity: 0; transform: translateY(26px); }
+  18%  { opacity: 1; transform: none; }
+  80%  { opacity: 1; transform: none; }
+  100% { opacity: 0; transform: translateY(-26px); }
+}
+
 @keyframes hero-drift {
   from { transform: translateY(-5%) scale(1.14); }
   to   { transform: translateY(5%)  scale(1.14); }
-}
-
-@keyframes reveal-up {
-  from { opacity: 0; transform: translateY(22px); }
-  to   { opacity: 1; transform: none; }
 }
 
 /* --- page transitions ---------------------------------------------

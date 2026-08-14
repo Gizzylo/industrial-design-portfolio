@@ -363,7 +363,6 @@ main > *,
   display: grid;
   place-items: center;
   background: var(--paper);
-  border-radius: 10px;
   overflow: hidden;
 }
 
@@ -397,21 +396,8 @@ main > *,
   letter-spacing: -0.025em;
   text-align: center;
   text-wrap: balance;
-  color: #fff;
+  color: var(--ink);
 }
-
-/* Scrim so the title stays legible whatever the photo underneath is doing. */
-.project__media::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: rgb(18 20 26 / 0.42);
-  opacity: 0;
-  transition: opacity 0.35s var(--ease);
-}
-
-.project:hover .project__media::after,
-.project:focus-within .project__media::after { opacity: 1; }
 
 /* Touch devices never hover, so the titles would be permanently invisible.
    Show them under the image there instead. */
@@ -422,8 +408,7 @@ main > *,
     padding: 0.9rem 0 0;
     place-items: start;
   }
-  .project__title { color: var(--ink); text-align: left; }
-  .project__media::after { content: none; }
+  .project__title { text-align: left; }
 }
 
 /* Stretched link — the ::after covers the whole card, so clicking the image
@@ -437,7 +422,6 @@ main > *,
   content: "";
   position: absolute;
   inset: 0;
-  border-radius: 10px;
 }
 
 .project:hover .project__title a { color: var(--accent); }
@@ -545,7 +529,6 @@ main > *,
 
 .case-figure img {
   width: 100%;
-  border-radius: 10px;
 }
 
 .case-figure figcaption {

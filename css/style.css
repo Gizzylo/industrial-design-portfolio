@@ -99,9 +99,10 @@ body::after {
   position: fixed;
   left: 0;
   right: 0;
-  /* Three quarters of the previous run — every value scaled by 0.75 so the
-     band shortens evenly at any viewport height, not just at the clamp ends. */
-  height: clamp(3.75rem, 9.75vh, 6.75rem);
+  /* Halved again — a shallow fade right at the edge rather than a long ramp.
+     All three clamp values scale together so it shortens evenly at any
+     viewport height, not just in the middle of the range. */
+  height: clamp(1.9rem, 4.9vh, 3.4rem);
   z-index: 9;
   pointer-events: none;
 }

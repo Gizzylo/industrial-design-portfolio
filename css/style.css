@@ -254,42 +254,6 @@ main > *,
   to   { opacity: 1; transform: none; }
 }
 
-/* --- pointer bubble ----------------------------------------------
-   Positioned by js/cursor.js. The negative margins centre it on the
-   pointer, so the script only has to set a translate.
-   ------------------------------------------------------------------ */
-
-.cursor-bubble {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  margin: -1.25rem 0 0 -1.25rem;
-  border-radius: 50%;
-  z-index: 100;
-  opacity: 0;
-  /* Must never intercept a click or a hover. */
-  pointer-events: none;
-  background: radial-gradient(circle at 34% 28%,
-    rgb(255 255 255 / 0.82),
-    rgb(46 0 212 / 0.17) 55%,
-    rgb(46 0 212 / 0.09));
-  border: 1px solid rgb(46 0 212 / 0.14);
-  box-shadow: 0 6px 20px rgb(38 42 54 / 0.13), inset 0 0 14px rgb(255 255 255 / 0.42);
-  backdrop-filter: blur(3px) saturate(170%);
-  -webkit-backdrop-filter: blur(3px) saturate(170%);
-  transition: opacity 0.35s var(--ease);
-  will-change: transform;
-}
-
-.cursor-bubble.is-visible { opacity: 1; }
-
-/* No pointer to follow, or motion is unwelcome — never show it. */
-@media (hover: none), (pointer: coarse), (prefers-reduced-motion: reduce) {
-  .cursor-bubble { display: none; }
-}
-
 /* --- buttons ------------------------------------------------------ */
 
 .button {

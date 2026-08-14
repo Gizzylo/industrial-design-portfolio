@@ -268,8 +268,10 @@ main > *,
   font-size: clamp(1.25rem, 1rem + 1vw, 1.8rem);
   line-height: 1.45;
   max-width: 44ch;
-  animation: paragraph-in 1100ms var(--ease-soft) both;
-  animation-delay: 180ms;
+  /* Arrives slowly as the page settles — a long, decelerating fade rather
+     than a pop. */
+  animation: paragraph-in 1900ms var(--ease-soft) both;
+  animation-delay: 250ms;
 }
 
 /* Down arrow pointing at the work below. */

@@ -185,12 +185,11 @@ main > *,
 /* No action buttons following it — don't leave a dangling gap. */
 .hero__body:last-child { margin-bottom: 0; }
 
-.hero__actions {
+.hero__content {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: row;
   align-items: center;
-  gap: 0.75rem 1.25rem;
-  justify-content: center;
+  gap: 2rem;
 }
 
 /* --- word reveal --------------------------------------------------

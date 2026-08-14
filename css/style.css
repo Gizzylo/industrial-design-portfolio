@@ -426,6 +426,26 @@ main > *,
 /* The homepage hero needs a lot of air; a case study opening does not. */
 .case .hero { padding-block: clamp(2rem, 5vw, 3.25rem) clamp(1.5rem, 4vw, 2.5rem); }
 
+/* Title left, description right, sitting on the same bottom line. Stacks
+   below 48rem, where two columns of text would be too narrow to read. */
+@media (min-width: 48rem) {
+  .case .hero {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    column-gap: clamp(2rem, 5vw, 4rem);
+    align-items: end;
+  }
+
+  /* align-items: end aligns margin boxes, so the title's bottom margin would
+     lift its text 28px above the description. Drop it in this layout. */
+  .case .hero__title { margin-bottom: 0; }
+
+  .case .hero__body {
+    max-width: 44ch;
+    margin-bottom: 0;
+  }
+}
+
 /* Edge to edge. `main > *` already stretches this element's border box across
    the viewport and insets its contents with padding, so zeroing that padding
    is all that's needed — a negative margin would shift the box instead of

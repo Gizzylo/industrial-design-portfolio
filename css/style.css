@@ -90,45 +90,79 @@ a { color: inherit; }
    pointer-events: none keeps the bands from swallowing clicks.
    ------------------------------------------------------------------ */
 
-/* The bottom band is fixed to the viewport. The top one cannot be — the
-   sticky header is opaque and sits above it, so a viewport-anchored band was
-   simply hidden behind the header. Anchoring it to the header instead puts it
-   directly underneath at whatever height the header happens to be. */
+/* --- edge blur ----------------------------------------------------
+   Two stacked layers per edge rather than one band. A single blur with a
+   linear mask ends on a visible line, because the blur strength is constant
+   right up to where the mask cuts it. Stacking a wide, light layer under a
+   short, strong one ramps the blur up gradually, and easing the mask stops
+   (rather than a straight linear fade) removes the last of the seam.
 
+   The top pair is anchored to .site-header, not the viewport: the header is
+   opaque and sits above, so viewport-fixed bands were hidden behind it.
+   pointer-events: none throughout, so none of this eats a click.
+   ------------------------------------------------------------------ */
+
+.site-header::before,
+.site-header::after,
+body::before,
 body::after {
   content: "";
   position: fixed;
   left: 0;
   right: 0;
-  bottom: 0;
-  height: clamp(3.5rem, 9vh, 6.5rem);
   z-index: 9;
   pointer-events: none;
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
-  mask-image: linear-gradient(to top, #000 35%, transparent);
-  -webkit-mask-image: linear-gradient(to top, #000 35%, transparent);
+}
+
+.site-header::before,
+.site-header::after { position: absolute; top: 100%; }
+
+/* Wide and light. */
+.site-header::before,
+body::before {
+  height: clamp(4.5rem, 11vh, 8rem);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/* Short and strong, sitting inside the light one. */
+.site-header::after,
+body::after {
+  height: clamp(2.2rem, 5.5vh, 3.8rem);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+}
+
+/* Eased stops — a plain linear fade leaves a faint band edge. */
+.site-header::before {
+  mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.72) 34%, rgb(0 0 0 / 0.32) 62%, rgb(0 0 0 / 0.08) 84%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.72) 34%, rgb(0 0 0 / 0.32) 62%, rgb(0 0 0 / 0.08) 84%, transparent 100%);
 }
 
 .site-header::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  height: clamp(2.5rem, 6vh, 4.5rem);
-  pointer-events: none;
-  backdrop-filter: blur(7px);
-  -webkit-backdrop-filter: blur(7px);
-  mask-image: linear-gradient(to bottom, #000 30%, transparent);
-  -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent);
+  mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.6) 40%, rgb(0 0 0 / 0.2) 72%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / 0.6) 40%, rgb(0 0 0 / 0.2) 72%, transparent 100%);
 }
 
-/* No backdrop-filter support means no bands at all, rather than two grey
-   strips sitting over the content. */
+body::before {
+  bottom: 0;
+  mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.72) 34%, rgb(0 0 0 / 0.32) 62%, rgb(0 0 0 / 0.08) 84%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.72) 34%, rgb(0 0 0 / 0.32) 62%, rgb(0 0 0 / 0.08) 84%, transparent 100%);
+}
+
+body::after {
+  bottom: 0;
+  mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.6) 40%, rgb(0 0 0 / 0.2) 72%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, #000 0%, rgb(0 0 0 / 0.6) 40%, rgb(0 0 0 / 0.2) 72%, transparent 100%);
+}
+
+/* No backdrop-filter support means no bands at all, rather than grey strips
+   sitting over the content. */
 @supports not (backdrop-filter: blur(1px)) {
-  body::after,
-  .site-header::after { display: none; }
+  .site-header::before,
+  .site-header::after,
+  body::before,
+  body::after { display: none; }
 }
 
 /* --- shared layout ------------------------------------------------ */
@@ -386,7 +420,23 @@ main > *,
 /* "industrial designer" in hot pink. #e0116f rather than the CSS `hotpink`
    keyword, which only reaches 2.65:1 on white — well under the 4.5:1 needed
    to stay readable. This one measures 4.69:1 and still reads hot pink. */
-.hero__body--intro em { color: var(--hot-pink); }
+.hero__body--intro em {
+  color: var(--hot-pink);
+  /* inline-block so it can be transformed at all; it also keeps the two words
+     together on one line rather than letting the phrase break mid-inflate. */
+  display: inline-block;
+  transform-origin: center center;
+  /* A little room on each side to inflate into. A transform does not reflow
+     its neighbours, so without this the grown phrase simply overlaps the
+     words either side of it. */
+  padding-inline: 0.22em;
+  margin-inline: -0.06em;
+  /* Overshoots past 1 before settling — that slight bounce is what reads as
+     inflating rather than simply scaling. */
+  transition: transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.hero__body--intro em:hover { transform: scale(1.07); }
 
 /* No heading above it any more, so the intro line fades in on its own. It is
    also the only copy on the first screen, so it is set larger than the rest.

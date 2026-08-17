@@ -756,7 +756,7 @@ main > *,
 
 /* The spec row now sits directly above and supplies the gap, so no top padding
    here — otherwise the two paddings stack into a gulf. */
-.case .hero { padding-block: 0 clamp(1.5rem, 4vw, 2.5rem); }
+.case .hero { padding-block: 0 clamp(4rem, 10vw, 7rem); }
 
 /* Title left, description right, sitting on the same bottom line. Stacks
    below 48rem, where two columns of text would be too narrow to read. */
@@ -765,7 +765,9 @@ main > *,
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: clamp(2rem, 5vw, 4rem);
-    align-items: end;
+    /* First baselines line up, so the subtitle's opening line sits level with
+       the title rather than its last line hanging off the title's foot. */
+    align-items: baseline;
   }
 
   /* align-items: end aligns margin boxes, so the title's bottom margin would
@@ -856,7 +858,8 @@ main > *,
 
 .case-figures .case-figure { padding-bottom: 0; }
 
-.case-section { padding-bottom: clamp(2.5rem, 7vw, 4.5rem); }
+/* Tight to the image that follows — the copy belongs with it. */
+.case-section { padding-bottom: clamp(1.1rem, 2.6vw, 1.75rem); }
 
 /* Every workflow stage is centred — label, heading and description. Overrides
    the .case left-alignment, which still governs the hero and the spec row. */

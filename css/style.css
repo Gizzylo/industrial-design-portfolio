@@ -765,9 +765,11 @@ main > *,
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     column-gap: clamp(2rem, 5vw, 4rem);
-    /* First baselines line up, so the subtitle's opening line sits level with
-       the title rather than its last line hanging off the title's foot. */
-    align-items: baseline;
+    /* Tops, not baselines. Baseline alignment is correct typographically but
+       looks wrong here: at 63px against 21px the shared baseline leaves the
+       two blocks starting 43px apart. Aligning the tops puts their first
+       lines level, which is what reads as aligned. */
+    align-items: start;
   }
 
   /* align-items: end aligns margin boxes, so the title's bottom margin would

@@ -747,8 +747,10 @@ main > *,
   /* Every gallery image is this tall. The one large image in the trio spans
      two of these rows, so it stays the deliberate exception. */
   --fig-h: clamp(11rem, 21vw, 20rem);
-  /* The closing single-image rows run taller than the paired ones. */
-  --fig-h-lg: clamp(16rem, 34vw, 32rem);
+  --fig-gap: clamp(0.75rem, 1.8vw, 1.25rem);
+  /* Exactly the height of the video slot: it spans two standard rows plus the
+     gap between them, so every full-width row matches it. */
+  --fig-h-lg: calc(var(--fig-h) * 2 + var(--fig-gap));
 }
 
 .case .hero__title,
@@ -860,9 +862,9 @@ main > *,
 /* Two images side by side. */
 .case-figures {
   display: grid;
-  grid-auto-rows: var(--fig-h);
+  grid-auto-rows: var(--fig-h-lg);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
-  gap: clamp(1rem, 2.5vw, 1.75rem);
+  gap: var(--fig-gap);
   padding-bottom: clamp(2rem, 5vw, 3.5rem);
 }
 
@@ -881,7 +883,7 @@ main > *,
 .case-trio {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(0.75rem, 1.8vw, 1.25rem);
+  gap: var(--fig-gap);
   padding-bottom: clamp(2rem, 5vw, 3.5rem);
 }
 
@@ -962,8 +964,8 @@ main > *,
 .case-row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: clamp(0.75rem, 1.8vw, 1.25rem);
-  padding-bottom: clamp(0.75rem, 1.8vw, 1.25rem);
+  gap: var(--fig-gap);
+  padding-bottom: var(--fig-gap);
 }
 
 .case-row .case-figure { padding-bottom: 0; }

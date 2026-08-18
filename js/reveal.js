@@ -10,7 +10,15 @@
    STAGGER and DURATION live here only — they're pushed to CSS as custom
    properties so the timings can't drift out of sync between the two files. */
 (function () {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    /* Autoplay cannot be prevented from CSS, so stop looping video here for
+       anyone who has asked for less movement. */
+    document.querySelectorAll('video[autoplay]').forEach(function (v) {
+      v.removeAttribute('autoplay');
+      v.pause();
+    });
+    return;
+  }
 
   /* 40% slower than the first pass (was 105 / 850 / 900). */
   var STAGGER = 147;   // ms between one word starting and the next

@@ -838,8 +838,11 @@ main > *,
   padding-bottom: clamp(2rem, 5vw, 3.5rem);
 }
 
-.case-figure img {
+.case-figure img,
+.case-figure video {
   width: 100%;
+  height: auto;
+  display: block;
 }
 
 .case-figure figcaption {

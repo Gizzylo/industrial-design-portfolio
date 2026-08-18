@@ -123,7 +123,7 @@ main > *,
    Everything inherits currentColor. */
 .logo {
   display: block;
-  width: clamp(2.45rem, 2.1rem + 1.1vw, 3rem);
+  width: clamp(1.9rem, 1.6rem + 0.9vw, 2.4rem);
   height: auto;
 }
 
@@ -160,36 +160,8 @@ main > *,
 
 .logo__wink,
 .logo__tongue,
-.logo__hand { opacity: 0; }
 
-/* Nothing at rest; the hand waves in on hover. */
-/* Palm and thumb are both filled; the generic `.logo circle`/`path` rule sets
-   fill:none, so these need the extra .logo to win on specificity. */
-.logo .logo__hand rect,
-.logo .logo__hand path {
-  fill: currentColor;
-  stroke: none;
-}
 
-.logo__hand {
-  transform-box: fill-box;
-  transform-origin: bottom center;
-}
-
-.logo__hand { transition: opacity 0.2s var(--ease); }
-
-.nav__name:hover .logo__hand,
-.nav__name:active .logo__hand,
-.nav__name:focus-visible .logo__hand {
-  opacity: 1;
-  animation: hand-wave 0.72s ease-in-out 3;
-}
-
-@keyframes hand-wave {
-  0%, 100% { transform: rotate(0deg); }
-  25%      { transform: rotate(17deg); }
-  75%      { transform: rotate(-17deg); }
-}
 
 .logo__tongue {
   fill: currentColor;
@@ -814,7 +786,10 @@ main > *,
 /* Spec row — Duration / Industry / Skills. */
 .case-meta {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
+  /* Sized to their content and centred as a group, so the four read as one
+     line rather than stretching to the full width. */
+  grid-template-columns: repeat(auto-fit, minmax(9rem, max-content));
+  justify-content: center;
   gap: 1.5rem clamp(1.5rem, 4vw, 3rem);
   margin: 0;
   /* Sits lower, clear of the hero shot above it. */
@@ -1141,6 +1116,50 @@ main > *,
   color: #c60f63;
   border-color: #ffc2de;
 }
+
+/* --- about: image left, words right --------------------------------- */
+
+.about-split {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: start;
+  padding-block: clamp(2rem, 5vw, 3.5rem) clamp(3rem, 7vw, 5rem);
+  text-align: left;
+}
+
+@media (min-width: 48rem) {
+  .about-split { grid-template-columns: 0.9fr 1.1fr; gap: clamp(2rem, 5vw, 4rem); }
+  /* Sticks while the words scroll past it. */
+  .about-split__media { position: sticky; top: clamp(6rem, 12vh, 8rem); }
+}
+
+.about-split__media { margin: 0; }
+
+.about-split__media img {
+  width: 100%;
+  border-radius: 0;
+}
+
+/* The words column keeps its own alignment regardless of the centred body. */
+.about-split__body { text-align: left; }
+
+.about-split__body .hero__title {
+  max-width: none;
+  margin: 0 0 0.75rem;
+  text-align: left;
+}
+
+.about-lead {
+  margin: 0 0 clamp(1.5rem, 4vw, 2.25rem);
+  font-size: clamp(1.05rem, 1rem + 0.35vw, 1.25rem);
+  font-weight: 300;
+  color: var(--ink-soft);
+}
+
+.about-split__body .prose > * { margin-inline: 0; max-width: none; }
+.about-split__body .list-plain { justify-content: flex-start; }
+.about-split__body .hero__actions { justify-content: flex-start; }
 
 /* --- prose (about page) ------------------------------------------- */
 

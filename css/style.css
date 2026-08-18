@@ -723,6 +723,8 @@ main > *,
   /* Exactly the height of the video slot: it spans two standard rows plus the
      gap between them, so every full-width row matches it. */
   --fig-h-lg: calc(var(--fig-h) * 2 + var(--fig-gap));
+  /* The closing run is taller again than the paired rows above it. */
+  --fig-h-xl: calc(var(--fig-h-lg) * 1.35);
 }
 
 .case .hero__title,
@@ -747,16 +749,35 @@ main > *,
    here — otherwise the two paddings stack into a gulf. */
 .case .hero { padding-block: 0 clamp(4rem, 10vw, 7rem); }
 
-/* Title and description stacked and centred, one above the other. */
-.case .hero { text-align: center; }
+/* Title left, description right, filling the same width as the image rows
+   below — both are .case children, so they share the container. */
+.case .hero { text-align: left; }
 
 .case .hero__title,
 .case .hero__body {
-  margin-inline: auto;
-  text-align: center;
+  margin-inline: 0;
+  text-align: left;
 }
 
-.case .hero__body { max-width: 52ch; }
+@media (min-width: 48rem) {
+  .case .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .case .hero__title { max-width: none; margin-bottom: 0; }
+
+  .case .hero__body {
+    max-width: none;
+    margin-bottom: 0;
+    justify-self: end;
+  }
+}
+
+/* A touch smaller than the homepage display size. */
+.case .hero__title { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.1rem); }
 
 /* Edge to edge. `main > *` already stretches this element's border box across
    the viewport and insets its contents with padding, so zeroing that padding
@@ -930,7 +951,7 @@ main > *,
 @media (min-width: 46rem) {
   .case > .case-figure img,
   .case > .case-figure video {
-    height: var(--fig-h-lg);
+    height: var(--fig-h-xl);
     object-fit: cover;
   }
 }
@@ -946,7 +967,7 @@ main > *,
 .case-row .case-figure { padding-bottom: 0; }
 
 @media (min-width: 46rem) {
-  .case-row { grid-auto-rows: var(--fig-h-lg); }
+  .case-row { grid-auto-rows: var(--fig-h-xl); }
 
   .case-row img,
   .case-row video {
@@ -965,7 +986,7 @@ main > *,
 .carousel {
   position: relative;
   overflow: hidden;
-  height: var(--fig-h-lg);
+  height: var(--fig-h-xl);
 }
 
 .carousel img {
@@ -1123,7 +1144,7 @@ main > *,
   display: grid;
   grid-template-columns: 1fr;
   gap: clamp(1.5rem, 4vw, 3rem);
-  align-items: start;
+  align-items: center;
   padding-block: clamp(2rem, 5vw, 3.5rem) clamp(3rem, 7vw, 5rem);
   text-align: left;
 }
@@ -1131,7 +1152,6 @@ main > *,
 @media (min-width: 48rem) {
   .about-split { grid-template-columns: 1.1fr 0.9fr; gap: clamp(2rem, 5vw, 4rem); }
   /* Sticks while the words scroll past it. */
-  .about-split__media { position: sticky; top: clamp(6rem, 12vh, 8rem); }
 }
 
 .about-split__media { margin: 0; }

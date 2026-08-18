@@ -552,9 +552,9 @@ main > *,
 /* Held in from the page edges and centred, so the two images read as a pair
    in the middle rather than running to the sides. */
 .work {
-  max-width: 1500px;
+  max-width: 1600px;
   margin-inline: auto;
-  padding-inline: clamp(1.5rem, 7vw, 6.5rem);
+  padding-inline: clamp(1.25rem, 4vw, 4rem);
   padding-bottom: clamp(3rem, 8vw, 6rem);
 }
 
@@ -630,7 +630,7 @@ main > *,
      the rows go ragged. object-fit: cover handles the differing crops. */
   .project__media {
     aspect-ratio: auto;
-    height: clamp(17rem, 25vw, 27rem);
+    height: clamp(21rem, 33vw, 36rem);
   }
 
   .project { grid-column: span 6; }

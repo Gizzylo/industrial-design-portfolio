@@ -735,14 +735,19 @@ main > *,
 /* Case content sits further in from the page edges than the rest of the site.
    .bleed is excluded so the hero shot still runs edge to edge. */
 .case > *:not(.bleed) {
-  max-width: 1400px;
+  max-width: 1560px;
   margin-inline: auto;
-  padding-inline: clamp(1.5rem, 7vw, 7rem);
+  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
 }
 
 /* Case-study pages are left-aligned rather than centred like the rest of the
    site, so the long image-led scroll has a consistent left edge to read down. */
-.case { text-align: left; }
+.case {
+  text-align: left;
+  /* Every gallery image is this tall. The one large image in the trio spans
+     two of these rows, so it stays the deliberate exception. */
+  --fig-h: clamp(11rem, 21vw, 20rem);
+}
 
 .case .hero__title,
 .case .hero__body,
@@ -853,12 +858,20 @@ main > *,
 /* Two images side by side. */
 .case-figures {
   display: grid;
+  grid-auto-rows: var(--fig-h);
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
   gap: clamp(1rem, 2.5vw, 1.75rem);
   padding-bottom: clamp(2rem, 5vw, 3.5rem);
 }
 
 .case-figures .case-figure { padding-bottom: 0; }
+
+.case-figures img,
+.case-figures video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 /* Tight to the image that follows — the copy belongs with it. */
 /* One large image with two stacked beside it. The large one spans both rows,
@@ -875,12 +888,13 @@ main > *,
 @media (min-width: 46rem) {
   .case-trio {
     grid-template-columns: 1.9fr 1fr;
-    grid-auto-rows: clamp(8rem, 14vw, 13rem);
+    grid-auto-rows: var(--fig-h);
   }
 
   .case-trio > .case-figure--lg { grid-row: span 2; }
 
-  .case-trio img {
+  .case-trio img,
+  .case-trio video {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -932,9 +946,17 @@ main > *,
   color: var(--ink-faint);
 }
 
-/* Alternating rows: singles and pairs, the pairs at different proportions so
-   one image runs longer than its neighbour. Row height is set per row, which
-   is what keeps a pair flush top and bottom whatever the source crops are. */
+/* A standalone full-width figure matches the rest rather than running to its
+   own natural aspect. */
+@media (min-width: 46rem) {
+  .case > .case-figure img,
+  .case > .case-figure video {
+    height: var(--fig-h);
+    object-fit: cover;
+  }
+}
+
+/* One image per row, all at the shared height. */
 .case-row {
   display: grid;
   grid-template-columns: 1fr;
@@ -945,14 +967,7 @@ main > *,
 .case-row .case-figure { padding-bottom: 0; }
 
 @media (min-width: 46rem) {
-  .case-row { grid-auto-rows: clamp(10rem, 19vw, 18rem); }
-
-  .case-row--21 { grid-template-columns: 2fr 1fr; }
-  .case-row--12 { grid-template-columns: 1fr 2fr; }
-  .case-row--11 { grid-template-columns: 1fr 1fr; }
-
-  .case-row--tall  { grid-auto-rows: clamp(14rem, 29vw, 27rem); }
-  .case-row--short { grid-auto-rows: clamp(8rem, 14vw, 13rem); }
+  .case-row { grid-auto-rows: var(--fig-h); }
 
   .case-row img,
   .case-row video {

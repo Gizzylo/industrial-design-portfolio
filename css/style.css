@@ -708,39 +708,42 @@ main > *,
 .case .prose p,
 .case .prose li { color: #6f7787; }
 
-/* The spec row now sits directly above and supplies the gap, so no top padding
-   here — otherwise the two paddings stack into a gulf. */
-.case .hero { padding-block: 0 clamp(4rem, 10vw, 7rem); }
+/* The hero shot sits directly above this, so the top padding here is what
+   drops the title and description clear of the image. .case-hero contributes
+   its own padding-bottom as well; the two together are the full gap. */
+.case .hero {
+  padding-block: clamp(3rem, 7vw, 5.5rem) clamp(4rem, 10vw, 7rem);
+  text-align: center;
+}
 
-/* Title left, description right, filling the same width as the image rows
-   below — both are .case children, so they share the container. */
-.case .hero { text-align: left; }
-
+/* Stacked on a single centre axis — title directly above the description,
+   both centred on the same line, so they read as one centred block.
+   These override the margin-inline: 0 set further up for .case children. */
 .case .hero__title,
 .case .hero__body {
-  margin-inline: 0;
-  text-align: left;
+  margin-inline: auto;
+  text-align: center;
 }
 
-@media (min-width: 48rem) {
-  .case .hero {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    column-gap: clamp(2rem, 5vw, 4rem);
-    align-items: center;
-  }
-
-  .case .hero__title { max-width: none; margin-bottom: 0; }
-
-  .case .hero__body {
-    max-width: none;
-    margin-bottom: 0;
-    justify-self: end;
-  }
+.case .hero__title {
+  max-width: 30ch;
+  margin-bottom: clamp(0.6rem, 1.4vw, 1rem);
 }
 
-/* A touch smaller than the homepage display size. */
-.case .hero__title { font-size: clamp(2rem, 1.4rem + 2.6vw, 3.1rem); }
+.case .hero__body {
+  max-width: var(--measure);
+  margin-bottom: 0;
+}
+
+/* Matched to .hero__body exactly so the two read as the same type. The display
+   tracking (-0.04em) and 1.04 line-height that suited a 3rem title look
+   cramped at body size, so both are normalised alongside the size. */
+.case .hero__title {
+  font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
+  font-weight: 300;
+  line-height: 1.5;
+  letter-spacing: normal;
+}
 
 /* Edge to edge. `main > *` already stretches this element's border box across
    the viewport and insets its contents with padding, so zeroing that padding

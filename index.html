@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=76">
+  <link rel="stylesheet" href="css/style.css?v=77">
 </head>
 <body>
   <a class="skip-link" href="#work">Skip to work</a>
@@ -59,46 +59,54 @@
          PLACEHOLDER IMAGES: the tiles use a flat dark-grey SVG. Swap each
          <img> for your own photo and write real alt text describing it. -->
     <section class="work" id="work" aria-label="Projects">
+      <!-- Rows of side-by-side tiles with unequal widths. .project--wide is the
+           dominant tile in its row; the emphasis alternates row to row. Add a
+           row by copying a .project-row, or make a tile full width by putting
+           it alone in its own row. -->
       <div class="grid">
-        <article class="project">
-          <div class="project__media">
-            <img src="images/root-tile.jpg" width="1600" height="753"
-                 decoding="async" alt="">
-          </div>
-          <div class="project__body">
-            <h3 class="project__title"><a href="projects/project-one.html">ROOT</a></h3>
-          </div>
-        </article>
+        <div class="project-row">
+          <article class="project project--wide">
+            <div class="project__media">
+              <img src="images/root-tile.jpg" width="1600" height="753"
+                   decoding="async" alt="">
+            </div>
+            <div class="project__body">
+              <h3 class="project__title"><a href="projects/project-one.html">ROOT</a></h3>
+            </div>
+          </article>
 
-        <article class="project">
-          <div class="project__media">
-            <img src="images/root-tile.jpg" width="1600" height="753"
-                 decoding="async" alt="">
-          </div>
-          <div class="project__body">
-            <h3 class="project__title"><a href="projects/project-two.html">Project Two</a></h3>
-          </div>
-        </article>
+          <article class="project">
+            <div class="project__media">
+              <img src="images/root-tile.jpg" width="1600" height="753"
+                   decoding="async" alt="">
+            </div>
+            <div class="project__body">
+              <h3 class="project__title"><a href="projects/project-two.html">Project Two</a></h3>
+            </div>
+          </article>
+        </div>
 
-        <article class="project">
-          <div class="project__media">
-            <img src="images/placeholder-4x3.svg" width="1200" height="900"
-                 loading="lazy" decoding="async" alt="">
-          </div>
-          <div class="project__body">
-            <h3 class="project__title"><a href="projects/project-three.html">Project Three</a></h3>
-          </div>
-        </article>
+        <div class="project-row">
+          <article class="project">
+            <div class="project__media">
+              <img src="images/placeholder-4x3.svg" width="1200" height="900"
+                   loading="lazy" decoding="async" alt="">
+            </div>
+            <div class="project__body">
+              <h3 class="project__title"><a href="projects/project-three.html">Project Three</a></h3>
+            </div>
+          </article>
 
-        <article class="project">
-          <div class="project__media">
-            <img src="images/placeholder-4x3.svg" width="1200" height="900"
-                 loading="lazy" decoding="async" alt="">
-          </div>
-          <div class="project__body">
-            <h3 class="project__title"><a href="projects/project-four.html">Project Four</a></h3>
-          </div>
-        </article>
+          <article class="project project--wide">
+            <div class="project__media">
+              <img src="images/placeholder-4x3.svg" width="1200" height="900"
+                   loading="lazy" decoding="async" alt="">
+            </div>
+            <div class="project__body">
+              <h3 class="project__title"><a href="projects/project-four.html">Project Four</a></h3>
+            </div>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -134,6 +142,6 @@
       <p>Bay Area, California</p>
     </div>
   </footer>
-  <script src="js/reveal.js?v=76"></script>
+  <script src="js/reveal.js?v=77"></script>
 </body>
 </html>

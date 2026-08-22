@@ -549,51 +549,63 @@ main > *,
 
 /* --- project grid ------------------------------------------------- */
 
-/* Held in from the page edges and centred, so the stack of images sits in the
-   middle of the page rather than running to the sides. */
+/* Inset and cap taken from the reference layout: 2vw of air at each edge,
+   content capped at 1500px and centred. */
 .work {
-  max-width: 1600px;
+  max-width: 1500px;
   margin-inline: auto;
-  padding-inline: clamp(1.25rem, 4vw, 4rem);
+  padding-inline: 2vw;
   padding-bottom: clamp(3rem, 8vw, 6rem);
 }
 
-/* One column — the projects stack top to bottom, every tile the same size.
-   Row gap is 0 on purpose: all vertical space between tiles comes from the
-   caption's own padding, which is what keeps the caption equidistant from the
-   image above it and the image below it. Add a gap here and that breaks. */
+/* Rows run down the page, 2vw apart. */
 .grid {
-  display: grid;
-  gap: 0;
-  grid-template-columns: 1fr;
-}
-
-/* Image full width; the caption sits below it, centred, in the flow. */
-.project {
-  margin: 0;
-  position: relative;
-  text-align: center;
-}
-
-/* Equal padding top and bottom is the whole trick — with the grid row gap at
-   0, padding-top is the distance to the image above and padding-bottom is the
-   distance to the next image, so the caption reads as centred between them. */
-.project__body {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 0.2rem;
-  padding-block: clamp(1.1rem, 2.2vw, 1.9rem);
+  gap: 2vw;
 }
 
-/* Uniform ratio at every width, so all four tiles are exactly the same size.
-   object-fit: cover absorbs the differing source crops. */
+/* One row of side-by-side tiles, 1vw apart. */
+.project-row {
+  display: flex;
+  gap: 1vw;
+}
+
+/* Unequal widths within a row: --grow is the tile's share of it. flex-basis is
+   0, so the widths are purely proportional to --grow rather than to the
+   images' intrinsic sizes. min-width: 0 lets a tile shrink below its content
+   width, which flex items otherwise refuse to do. */
+.project {
+  --grow: 1.6;
+  flex: var(--grow) 1 0;
+  min-width: 0;
+  margin: 0;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  transition: flex-grow 0.5s ease-in-out;
+}
+
+/* The dominant tile in its row. */
+.project--wide { --grow: 2.2; }
+
+/* Hovering nudges the tile's share up, so it expands and squeezes its
+   neighbour — flex-grow is the animated property. Proportional rather than a
+   fixed target, so wide and narrow tiles grow by the same relative amount.
+   Gated on real hover so it never fires from a tap on touch. */
+@media (hover: hover) {
+  .project:hover { flex-grow: calc(var(--grow) * 1.18); }
+}
+
+/* Fixed row height with rounded corners, both from the reference. The vw
+   height is what keeps every tile in a row the same height regardless of the
+   source crop; the cap stops it growing without limit on wide monitors. */
 .project__media {
   position: relative;
-  aspect-ratio: 16 / 9;
-  display: grid;
-  place-items: center;
+  height: 45vw;
+  max-height: 703px;
+  border-radius: clamp(6px, 1vw, 16px);
   background: var(--paper);
   overflow: hidden;
 }
@@ -602,14 +614,29 @@ main > *,
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s var(--ease);
 }
 
-/* The blur used to exist so the overlaid title stayed legible on top of the
-   image. The title now sits below the image, so blurring would obscure the
-   photo for no reason — a quiet zoom is left as the hover affordance. */
-.project:hover .project__media img {
-  transform: scale(1.03);
+/* The caption sits below its tile, centred. */
+.project__body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding-block: clamp(0.7rem, 1.4vw, 1.1rem);
+}
+
+/* Two columns of tiles have nowhere to go on a phone, so rows become a single
+   column. A 45vw tile would be a sliver at that width, so height goes back to
+   an aspect ratio, and the grow-on-hover is pointless once tiles are full
+   width. */
+@media (max-width: 46rem) {
+  .project-row { flex-direction: column; gap: 2vw; }
+
+  .project__media {
+    height: auto;
+    aspect-ratio: 4 / 3;
+  }
 }
 
 

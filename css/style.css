@@ -713,33 +713,43 @@ main > *,
    its own padding-bottom as well; the two together are the full gap. */
 .case .hero {
   padding-block: clamp(3rem, 7vw, 5.5rem) clamp(4rem, 10vw, 7rem);
-  text-align: center;
+  text-align: left;
 }
 
-/* Stacked on a single centre axis — title directly above the description,
-   both centred on the same line, so they read as one centred block.
-   These override the margin-inline: 0 set further up for .case children. */
 .case .hero__title,
 .case .hero__body {
-  margin-inline: auto;
-  text-align: center;
+  margin-inline: 0;
+  text-align: left;
 }
 
-.case .hero__title {
-  max-width: 30ch;
-  margin-bottom: clamp(0.6rem, 1.4vw, 1rem);
+/* Title and description side by side, filling the same width as the image rows
+   below. align-items: center is what keeps the two centred on each other —
+   the short title sits on the vertical midline of the taller paragraph.
+   Below this width there is no room for two columns, so they stack. */
+@media (min-width: 48rem) {
+  .case .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: clamp(2rem, 5vw, 4rem);
+    align-items: center;
+  }
+
+  .case .hero__title { max-width: none; margin-bottom: 0; }
+
+  .case .hero__body {
+    max-width: none;
+    margin-bottom: 0;
+    justify-self: end;
+  }
 }
 
+/* One type treatment for both, so the title reads as part of the same block
+   rather than as a heading. --step-sm is a step down from the previous body
+   size; the title's display tracking and 1.04 line-height are normalised
+   since both look cramped this small. */
+.case .hero__title,
 .case .hero__body {
-  max-width: var(--measure);
-  margin-bottom: 0;
-}
-
-/* Matched to .hero__body exactly so the two read as the same type. The display
-   tracking (-0.04em) and 1.04 line-height that suited a 3rem title look
-   cramped at body size, so both are normalised alongside the size. */
-.case .hero__title {
-  font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
+  font-size: var(--step-sm);
   font-weight: 300;
   line-height: 1.5;
   letter-spacing: normal;

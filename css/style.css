@@ -549,8 +549,8 @@ main > *,
 
 /* --- project grid ------------------------------------------------- */
 
-/* Held in from the page edges and centred, so the two images read as a pair
-   in the middle rather than running to the sides. */
+/* Held in from the page edges and centred, so the stack of images sits in the
+   middle of the page rather than running to the sides. */
 .work {
   max-width: 1600px;
   margin-inline: auto;
@@ -558,41 +558,40 @@ main > *,
   padding-bottom: clamp(3rem, 8vw, 6rem);
 }
 
-/* Two columns fixed rather than auto-fit — at full-bleed widths auto-fit would
-   keep adding columns and shrink the images again. */
+/* One column — the projects stack top to bottom, every tile the same size.
+   Row gap is 0 on purpose: all vertical space between tiles comes from the
+   caption's own padding, which is what keeps the caption equidistant from the
+   image above it and the image below it. Add a gap here and that breaks. */
 .grid {
   display: grid;
-  /* One value: the gap between rows matches the gap between columns. */
-  gap: clamp(1rem, 1.8vw, 1.5rem);
+  gap: 0;
   grid-template-columns: 1fr;
 }
 
-/* Image full width of its column; the title sits centred on top of it and
-   only appears on hover. */
+/* Image full width; the caption sits below it, centred, in the flow. */
 .project {
   margin: 0;
   position: relative;
-  text-align: left;
+  text-align: center;
 }
 
-
+/* Equal padding top and bottom is the whole trick — with the grid row gap at
+   0, padding-top is the distance to the image above and padding-bottom is the
+   distance to the next image, so the caption reads as centred between them. */
 .project__body {
-  position: absolute;
-  inset: 0;
-  z-index: 2;
-  display: grid;
-  place-items: center;
-  padding: 1rem;
-  opacity: 0;
-  transition: opacity 0.35s var(--ease);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.2rem;
+  padding-block: clamp(1.1rem, 2.2vw, 1.9rem);
 }
 
-.project:hover .project__body,
-.project:focus-within .project__body { opacity: 1; }
-
+/* Uniform ratio at every width, so all four tiles are exactly the same size.
+   object-fit: cover absorbs the differing source crops. */
 .project__media {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 16 / 9;
   display: grid;
   place-items: center;
   background: var(--paper);
@@ -603,41 +602,14 @@ main > *,
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.5s var(--ease), filter 0.4s var(--ease);
+  transition: transform 0.5s var(--ease);
 }
 
-/* Blur on hover. The slight scale is not decoration — a blurred image samples
-   past its own edges, which leaves a pale fringe inside the tile. Scaling up
-   pushes that fringe outside the overflow:hidden box. */
+/* The blur used to exist so the overlaid title stayed legible on top of the
+   image. The title now sits below the image, so blurring would obscure the
+   photo for no reason — a quiet zoom is left as the hover affordance. */
 .project:hover .project__media img {
-  filter: blur(7px);
-  transform: scale(1.05);
-}
-
-/* Alternating widths: wide + narrow on one row, narrow + wide on the next, so
-   the pairing flips as you go down. Twelve columns gives the 7/5 split.
-
-   This block must stay below .project__media's aspect-ratio rule — a media
-   query adds no specificity, so declared earlier it would silently lose and
-   the tiles would come out uniform. */
-@media (min-width: 46rem) {
-  .grid {
-    grid-template-columns: repeat(12, 1fr);
-    align-items: start;
-  }
-
-  /* Equal height, varying width — otherwise the wider tile is also taller and
-     the rows go ragged. object-fit: cover handles the differing crops. */
-  .project__media {
-    aspect-ratio: auto;
-    height: clamp(21rem, 33vw, 36rem);
-  }
-
-  .project { grid-column: span 6; }
-  .project:nth-child(4n + 1) { grid-column: span 7; }  /* row 1 left  — wide */
-  .project:nth-child(4n + 2) { grid-column: span 5; }  /* row 1 right — narrow */
-  .project:nth-child(4n + 3) { grid-column: span 5; }  /* row 2 left  — narrow */
-  .project:nth-child(4n + 4) { grid-column: span 7; }  /* row 2 right — wide */
+  transform: scale(1.03);
 }
 
 
@@ -649,32 +621,22 @@ main > *,
   color: var(--ink-faint);
 }
 
+/* Deliberately identical to .project__desc below — same family, size, weight
+   and colour, so the title reads as part of the caption rather than as a
+   heading. It stays an <h3> for document structure; only the styling changes.
+   0.75rem is half the 1.5rem this title used to top out at. */
 .project__title {
   margin: 0;
-  font-size: clamp(1.125rem, 1rem + 0.6vw, 1.5rem);
-  font-weight: 500;
-  letter-spacing: -0.025em;
+  font-size: var(--step-xs);
+  font-weight: 300;
+  letter-spacing: normal;
   text-align: center;
   text-wrap: balance;
-  color: var(--ink);
-}
-
-/* Touch devices never hover, so the titles would be permanently invisible.
-   Show them under the image there instead. */
-@media (hover: none) {
-  .project__body {
-    position: static;
-    opacity: 1;
-    padding: 0.9rem 0 0;
-    place-items: start;
-  }
-  .project__title { text-align: left; }
+  color: var(--ink-soft);
 }
 
 /* Stretched link — the ::after covers the whole card, so clicking the image
-   opens the project too, without nesting a link around block content.
-   It inherits the ink colour; hover must not tint it, since hover is exactly
-   when this title is on screen. */
+   opens the project too, without nesting a link around block content. */
 .project__title a {
   color: inherit;
   text-decoration: none;
@@ -692,12 +654,13 @@ main > *,
   color: var(--ink-faint);
 }
 
+/* Matches .project__title exactly — see the note there. */
 .project__desc {
-  flex: 1 1 100%;
-  margin: 0.15rem auto 0;
+  margin: 0;
   max-width: 46ch;
-  font-size: var(--step-sm);
+  font-size: var(--step-xs);
   font-weight: 300;
+  text-align: center;
   color: var(--ink-soft);
   text-wrap: pretty;
 }

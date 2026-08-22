@@ -26,6 +26,10 @@
   --step-sm:    0.875rem;
   --step-xs:    0.75rem;
 
+  /* Corner radius shared by the homepage tiles and the case-page images, so
+     the two cannot drift apart. Change it here only. */
+  --radius-tile: clamp(6px, 1vw, 16px);
+
   --sans:   "Fustat", ui-sans-serif, -apple-system, "Helvetica Neue", Arial, sans-serif;
   --serif:  "Instrument Serif", ui-serif, Georgia, "Times New Roman", serif;
   --bubbly: "Fredoka", "Baloo 2", ui-rounded, system-ui, sans-serif;
@@ -605,7 +609,7 @@ main > *,
   position: relative;
   height: 45vw;
   max-height: 703px;
-  border-radius: clamp(6px, 1vw, 16px);
+  border-radius: var(--radius-tile);
   background: var(--paper);
   overflow: hidden;
 }
@@ -849,6 +853,17 @@ main > *,
   width: 100%;
   height: auto;
   display: block;
+}
+
+/* Same corner radius as the homepage tiles, from the shared token.
+   .case-hero is deliberately not included — it runs edge to edge, where
+   rounding would notch the corners against the viewport. The carousel takes
+   the radius on its container instead of its images, since those are
+   absolutely stacked and its overflow: hidden is what clips them. */
+.case-figure img,
+.case-figure video,
+.carousel {
+  border-radius: var(--radius-tile);
 }
 
 .case-figure figcaption {

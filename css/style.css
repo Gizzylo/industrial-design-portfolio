@@ -16,15 +16,23 @@
   --measure:    52ch;
   /* Full-bleed: the layout spans the viewport, held off the edges only by the
      gutter. Reading copy is still constrained by --measure. */
-  --page:       100%;
+  /* One shared content width for the whole site — header, page content and
+     footer all sit in it, which is what keeps the footer line aligned with the
+     content above it on every page. Matches the homepage project grid. */
+  --page:       1500px;
   --gutter:     clamp(1rem, 3vw, 2.5rem);
 
   /* Display step tops out near the reference's 63px hero. */
   --step-xl:    clamp(2.5rem, 1.4rem + 4.6vw, 3.95rem);
   --step-lg:    clamp(1.6rem, 1.2rem + 1.6vw, 2.25rem);
-  --step-md:    clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --step-md:    clamp(1rem, 0.95rem + 0.3vw, 1.2rem);
   --step-sm:    0.875rem;
   --step-xs:    0.75rem;
+
+  /* Hero copy size shared by the case pages and the About page, so the title
+     and the paragraph under it read at one size on both. A notch under
+     --step-md. Change it here and both pages move together. */
+  --hero-copy:  clamp(1rem, 0.95rem + 0.3vw, 1.2rem);
 
   /* Corner radius shared by the homepage tiles and the case-page images, so
      the two cannot drift apart. Change it here only. */
@@ -87,9 +95,19 @@ a { color: inherit; }
 
 /* --- shared layout ------------------------------------------------ */
 
-.site-header,
 main > *,
 .site-footer {
+  max-width: var(--page);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* The header is the one exception: its band of background has to run the full
+   width of the viewport, or content would show through beside it while
+   scrolling under. So the element stays full width and the nav inside it takes
+   the shared container instead — same max-width and padding as everything
+   else, so the wordmark lines up with the content below it. */
+.site-header .nav {
   max-width: var(--page);
   margin-inline: auto;
   padding-inline: var(--gutter);
@@ -127,7 +145,9 @@ main > *,
    Everything inherits currentColor. */
 .logo {
   display: block;
-  width: clamp(1.9rem, 1.6rem + 0.9vw, 2.4rem);
+  /* The C fills 65% of the viewBox, so this width makes the visible letter
+     about 1.3 times the height of the nav text beside it. */
+  width: calc(var(--step-md) * 2);
   height: auto;
 }
 
@@ -136,7 +156,7 @@ main > *,
 .logo circle {
   fill: none;
   stroke: currentColor;
-  stroke-width: 3.1;
+  stroke-width: 2.2;
   stroke-linecap: round;
   stroke-linejoin: round;
 }
@@ -148,8 +168,9 @@ main > *,
   stroke: none;
 }
 
-/* Lighter than the C, so the face reads before the ring does. */
-.logo .logo__smile { stroke-width: 2.4; }
+/* Lighter than the C, so the face reads before the ring does. Kept at the same
+   ratio to the C's width as before, so thinning one thins the other in step. */
+.logo .logo__smile { stroke-width: 1.7; }
 
 /* The whole face tilts on hover, like a head cocked to one side. */
 .logo {
@@ -211,7 +232,7 @@ main > *,
   margin: 0;
   padding: 0;
   list-style: none;
-  font-size: var(--step-sm);
+  font-size: var(--step-md);
 }
 
 .nav__links a {
@@ -261,7 +282,7 @@ main > *,
 .hero__body {
   max-width: var(--measure);
   margin: 0 auto clamp(1.5rem, 4vw, 2rem);
-  font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.3125rem);
+  font-size: var(--hero-copy);
   font-weight: 300;
   line-height: 1.5;
   color: var(--ink-soft);
@@ -426,8 +447,6 @@ main > *,
     .case-figure,
     .case-figures,
     .project,
-    .site-footer__top,
-    .case-meta > div,
     .case-section .section-head,
     .case-section .prose {
       animation: drift-through linear both;
@@ -438,13 +457,27 @@ main > *,
     /* A pair animates as one block; its figures must not animate again. */
     .case-figures .case-figure { animation: none; }
 
+    /* The spec row is the last thing on a project page, so nothing below it
+       can scroll it up and out of the viewport. Its `cover` progress therefore
+       stalls partway — short of the 18% where drift-through reaches full
+       opacity — and it would sit permanently faded and offset.
+
+       `entry` fixes that: it completes as soon as the element is fully inside
+       the viewport, which happens at the bottom of the page. drift-in is
+       drift-through without the fade-out tail, so once arrived it stays. */
+    .case-meta > div {
+      animation: drift-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 100%;
+    }
+
     /* Staggered arrivals. Scroll-driven animations have no delay to stagger
        with — progress is tied to position, not time — so the offset comes
        from starting each item's range slightly later instead. */
-    .case-meta > div:nth-child(1) { animation-range: cover 1%  cover 100%; }
-    .case-meta > div:nth-child(2) { animation-range: cover 4%  cover 100%; }
-    .case-meta > div:nth-child(3) { animation-range: cover 7%  cover 100%; }
-    .case-meta > div:nth-child(4) { animation-range: cover 10% cover 100%; }
+    .case-meta > div:nth-child(1) { animation-range: entry 0%  entry 70%; }
+    .case-meta > div:nth-child(2) { animation-range: entry 5%  entry 80%; }
+    .case-meta > div:nth-child(3) { animation-range: entry 10% entry 90%; }
+    .case-meta > div:nth-child(4) { animation-range: entry 15% entry 100%; }
 
     .case-section .section-head { animation-range: cover 1% cover 100%; }
     .case-section .prose        { animation-range: cover 5% cover 100%; }
@@ -464,6 +497,13 @@ main > *,
 
 /* In at the start, held solid through the middle, out at the end. The wide
    hold is what keeps things readable while you are actually looking at them. */
+/* Arrival only, no departure — for elements with nothing below them to scroll
+   them back out. */
+@keyframes drift-in {
+  from { opacity: 0; transform: translateY(26px); }
+  to   { opacity: 1; transform: none; }
+}
+
 @keyframes drift-through {
   0%   { opacity: 0; transform: translateY(26px); }
   18%  { opacity: 1; transform: none; }
@@ -555,10 +595,14 @@ main > *,
 
 /* Inset and cap taken from the reference layout: 2vw of air at each edge,
    content capped at 1500px and centred. */
+/* Reads from the shared container tokens rather than repeating the numbers,
+   so the grid and the footer line up by construction. The top padding is what
+   sets the work off the header now that the intro section is gone. */
 .work {
-  max-width: 1500px;
+  max-width: var(--page);
   margin-inline: auto;
-  padding-inline: 2vw;
+  padding-inline: var(--gutter);
+  padding-top: clamp(1.5rem, 4vw, 3rem);
   padding-bottom: clamp(3rem, 8vw, 6rem);
 }
 
@@ -620,14 +664,43 @@ main > *,
   object-fit: cover;
 }
 
-/* The caption sits below its tile, centred. */
+/* No hover treatment on the image itself — the tile widening via flex-grow is
+   the whole hover response now. The scale that used to sit here existed only
+   to hide the blur's edge fringe, so it went with the blur. */
+
+/* The tiles show no titles — the images carry the page on their own. The
+   caption stays in the DOM rather than being deleted for two reasons: it holds
+   the link, whose ::after stretches to make the whole tile clickable, and it
+   gives screen readers the project's name. opacity: 0 hides it from sight
+   while keeping both of those intact; display: none or .visually-hidden would
+   break the stretched click area. */
 .project__body {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   gap: 0.2rem;
-  padding-block: clamp(0.7rem, 1.4vw, 1.1rem);
+  padding: 1rem;
+  opacity: 0;
+}
+
+/* With the title invisible, a keyboard user tabbing to a tile would otherwise
+   get a focus ring drawn on an invisible element. Put it on the tile instead,
+   so focus is still visible without bringing the titles back. */
+.project:focus-within .project__media {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* White over the blurred photo. The shadow is insurance: a blurred pale image
+   can leave white text with almost no contrast, and this keeps the title
+   readable without dropping a scrim over the whole tile. */
+.project__body .project__title {
+  color: #fff;
+  text-shadow: 0 1px 12px rgb(0 0 0 / 0.55);
 }
 
 /* Two columns of tiles have nowhere to go on a phone, so rows become a single
@@ -643,6 +716,10 @@ main > *,
   }
 }
 
+/* No touch fallback for the caption any more — the titles are hidden on every
+   device now, so there is nothing to fall back to. Tapping the tile still
+   works: the overlay keeps its full-tile stretched link. */
+
 
 /* Delete .project__placeholder once real images go in. */
 .project__placeholder {
@@ -652,13 +729,13 @@ main > *,
   color: var(--ink-faint);
 }
 
-/* Deliberately identical to .project__desc below — same family, size, weight
-   and colour, so the title reads as part of the caption rather than as a
-   heading. It stays an <h3> for document structure; only the styling changes.
-   0.75rem is half the 1.5rem this title used to top out at. */
+/* Twice --step-xs, written as the calc so the relationship to the caption size
+   stays visible. Deliberately the larger of the two now: it only appears over
+   a blurred tile on hover, so it has to carry that moment. Keeps the caption's
+   family and weight, and stays an <h3> for document structure. */
 .project__title {
   margin: 0;
-  font-size: var(--step-xs);
+  font-size: calc(var(--step-xs) * 2);
   font-weight: 300;
   letter-spacing: normal;
   text-align: center;
@@ -713,7 +790,13 @@ main > *,
   /* Every gallery image is this tall. The one large image in the trio spans
      two of these rows, so it stays the deliberate exception. */
   --fig-h: clamp(11rem, 21vw, 20rem);
+  /* Gap *within* a block — between the two halves of a pair, and between the
+     trio's stacked pair. The --fig-h-lg maths below depends on it. */
   --fig-gap: clamp(0.75rem, 1.8vw, 1.25rem);
+  /* Gap *between* one image block and the next, down the whole page. Every
+     stacked container uses this and nothing else, so the vertical rhythm is
+     even from the first image to the last. Change it here only. */
+  --fig-stack: clamp(2rem, 5vw, 3.5rem);
   /* Exactly the height of the video slot: it spans two standard rows plus the
      gap between them, so every full-width row matches it. */
   --fig-h-lg: calc(var(--fig-h) * 2 + var(--fig-gap));
@@ -775,12 +858,12 @@ main > *,
 }
 
 /* One type treatment for both, so the title reads as part of the same block
-   rather than as a heading. --step-sm is a step down from the previous body
-   size; the title's display tracking and 1.04 line-height are normalised
-   since both look cramped this small. */
+   rather than as a heading. --hero-copy sits just under the site's body size
+   and is shared with the About page, so the two pages stay matched. The
+   title's display tracking and 1.04 line-height stay normalised at this size. */
 .case .hero__title,
 .case .hero__body {
-  font-size: var(--step-sm);
+  font-size: var(--hero-copy);
   font-weight: 300;
   line-height: 1.5;
   letter-spacing: normal;
@@ -790,7 +873,10 @@ main > *,
    the viewport and insets its contents with padding, so zeroing that padding
    is all that's needed — a negative margin would shift the box instead of
    widening it, because max-width: 100% stops it growing back. */
-.bleed { padding-inline: 0; }
+/* max-width: none matters now that --page caps main's children — without it
+   the "full bleed" hero would stop at the shared container instead of running
+   to the viewport edges. */
+.bleed { max-width: none; padding-inline: 0; }
 
 /* The hero shot: first thing on the page, full width, no rounding. */
 .case-hero {
@@ -845,7 +931,7 @@ main > *,
 /* Images: full width of the container, stacked. */
 .case-figure {
   margin: 0;
-  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+  padding-bottom: var(--fig-stack);
 }
 
 .case-figure img,
@@ -876,19 +962,29 @@ main > *,
 /* Two images side by side. */
 .case-figures {
   display: grid;
-  grid-auto-rows: var(--fig-h-lg);
+  /* Rows size to their images; the aspect-ratio below is what makes the pair
+     level, rather than a fixed row height in absolute units. */
+  grid-auto-rows: auto;
+  align-items: start;
   grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
   gap: var(--fig-gap);
-  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+  padding-bottom: var(--fig-stack);
 }
 
 .case-figures .case-figure { padding-bottom: 0; }
 
+/* A shared 16:9 box, so both halves of a pair are the same size and sit level.
+   16:9 is chosen because it is the widest source in a pair here — a 16:9 image
+   lands in it untouched, and a taller one is cropped top and bottom rather
+   than at the sides, which is the less destructive cut for a product photo.
+   object-position keeps that crop centred. */
 .case-figures img,
 .case-figures video {
   width: 100%;
-  height: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
+  object-position: center;
 }
 
 /* Tight to the image that follows — the copy belongs with it. */
@@ -898,7 +994,7 @@ main > *,
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--fig-gap);
-  padding-bottom: clamp(2rem, 5vw, 3.5rem);
+  padding-bottom: var(--fig-stack);
 }
 
 .case-trio .case-figure { padding-bottom: 0; }
@@ -974,15 +1070,34 @@ main > *,
   }
 }
 
-/* One image per row, all at the shared height. */
+/* One image per row, all at the shared height. Single-column, so the gap here
+   is vertical image-to-image and takes --fig-stack like every other break. */
 .case-row {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--fig-gap);
-  padding-bottom: var(--fig-gap);
+  gap: var(--fig-stack);
+  padding-bottom: var(--fig-stack);
 }
 
 .case-row .case-figure { padding-bottom: 0; }
+
+/* A line of copy sitting between two image rows, centred. The row above
+   already contributes its own padding-bottom, so that is cancelled here —
+   without it the space above would be that gap plus this padding while the
+   space below would be this padding alone, and the copy would sit off-centre
+   between the two images rather than equidistant from them. */
+.case-note {
+  max-width: var(--measure);
+  margin-inline: auto;
+  margin-top: calc(-1 * var(--fig-stack));
+  padding-block: var(--fig-stack);
+  font-size: var(--step-md);
+  font-weight: 300;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--ink);
+  text-wrap: pretty;
+}
 
 @media (min-width: 46rem) {
   .case-row { grid-auto-rows: var(--fig-h-xl); }
@@ -1104,8 +1219,11 @@ main > *,
 }
 
 .bubbly .hero__title {
-  font-size: clamp(2.6rem, 1.6rem + 4.4vw, 4.4rem);
-  line-height: 1.02;
+  font-size: var(--hero-copy);
+  line-height: 1.5;
+  /* The shared display shadow above is tuned for 4rem type; at this size those
+     offsets read as a smudge, so drop to a single hairline. */
+  filter: drop-shadow(0 1px 0 rgb(158 8 78 / 0.22));
 }
 
 .bubbly .prose h2 {
@@ -1158,6 +1276,22 @@ main > *,
 
 /* --- about: image left, words right --------------------------------- */
 
+/* The about page holds one block, so it sits centred in what is left of the
+   viewport under the sticky header rather than starting at the top. Subtracting
+   3rem rather than the header's full height mirrors .hero--full: the header
+   ranges from ~63px to ~85px, and subtracting its true height would push the
+   block low on small screens. min-height, not height, so a long bio still
+   grows the page instead of being clipped. */
+#about {
+  min-height: calc(100svh - 3rem);
+  display: grid;
+  align-content: center;
+}
+
+/* No max-width of its own: it inherits the shared container from `main > *`,
+   which is the same width and padding the header nav uses. That is what makes
+   the copy start level with the wordmark and the portrait end level with the
+   nav links above it. */
 .about-split {
   display: grid;
   grid-template-columns: 1fr;
@@ -1170,13 +1304,42 @@ main > *,
 @media (min-width: 48rem) {
   .about-split { grid-template-columns: 1.1fr 0.9fr; gap: clamp(2rem, 5vw, 4rem); }
   /* Sticks while the words scroll past it. */
+
+  /* Back to source order — text first, portrait second — now that the two
+     sit side by side instead of stacked. */
+  .about-split__media { order: 0; }
 }
 
-.about-split__media { margin: 0; }
-
-.about-split__media img {
+/* Fills its column, so its outer edge lands on the container edge — level with
+   the nav links above it. Ordered before the body so the portrait is the
+   first thing on the page on a single-column phone layout. */
+.about-split__media {
+  order: -1;
+  margin: 0;
   width: 100%;
+}
+
+/* Portrait rather than landscape — a tall box, filled by cropping rather than
+   squashing. Adjust the ratio here: 4/5 is gently tall, 3/4 taller again. */
+.about-split__media img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 130vh;
+  margin-inline: auto;
+  object-fit: contain;
   border-radius: 0;
+  /* The table and legs are cut off by the photo's edge, so fade those two
+     edges out into the page's white. */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 25%),
+    linear-gradient(to top, transparent, #000 12%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent, #000 25%),
+    linear-gradient(to top, transparent, #000 12%);
+  mask-composite: intersect;
   animation: pop-in 900ms cubic-bezier(0.34, 1.4, 0.64, 1) both;
   animation-delay: 250ms;
 }
@@ -1197,8 +1360,9 @@ main > *,
 
 .about-lead {
   margin: 0 0 clamp(1.5rem, 4vw, 2.25rem);
-  font-size: clamp(1.05rem, 1rem + 0.35vw, 1.25rem);
+  font-size: var(--hero-copy);
   font-weight: 300;
+  line-height: 1.5;
   color: var(--ink-soft);
 }
 
@@ -1346,6 +1510,144 @@ main > *,
 
 .site-footer__bottom p { margin: 0; }
 
+/* --- project four: password gate --------------------------------------- */
+
+/* The home page tile: a password box drawn on the image itself, in place of
+   the stretched link every other tile uses. Just the input and an arrow
+   button beside it — nothing else is on this tile. */
+.project__lock {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  text-align: center;
+  background: rgb(20 20 24 / 0.38);
+}
+
+.project__lock-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.project__lock input[type="password"] {
+  width: min(11rem, 48vw);
+  padding: 0.55rem 0.9rem;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  font: inherit;
+  font-size: var(--step-sm);
+  background: rgb(255 255 255 / 0.95);
+  color: var(--ink);
+}
+
+.project__lock input[type="password"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Icon-only: round, same width as height, the arrow glyph centred. */
+.project__lock button {
+  width: 2.3rem;
+  height: 2.3rem;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  font-size: 1.1rem;
+  line-height: 1;
+  background: #fff;
+  color: var(--ink);
+  cursor: pointer;
+  transition: transform 0.2s var(--ease), opacity 0.2s var(--ease);
+}
+
+.project__lock button:hover { transform: translateX(3px); opacity: 0.9; }
+
+.project__lock-error {
+  margin: 0;
+  font-size: var(--step-xs);
+  color: #fff;
+  text-shadow: 0 1px 10px rgb(0 0 0 / 0.5);
+}
+
+/* The hub and its two sub-pages: a full-page gate that stands in for the
+   real content (held in a sibling with `hidden` until the password matches,
+   client-side — see js/project-four-lock.js). */
+.page-lock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  min-height: calc(100svh - 3rem);
+  padding-block: clamp(2rem, 6vw, 4rem);
+  text-align: center;
+}
+
+/* The flex display above beats the UA stylesheet's [hidden] rule on
+   specificity, so without this override setting `hidden` would do nothing
+   and the gate would stay on screen even once unlocked. */
+.page-lock[hidden] { display: none; }
+
+.page-lock__eyebrow {
+  margin: 0;
+  font-size: var(--step-xs);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+}
+
+.page-lock__title {
+  margin: 0;
+  font-size: var(--step-lg);
+  font-weight: 400;
+  max-width: 24ch;
+}
+
+.page-lock__body {
+  margin: 0;
+  max-width: 40ch;
+  font-size: var(--step-md);
+  font-weight: 300;
+  color: var(--ink-soft);
+}
+
+.page-lock form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.5rem;
+}
+
+.page-lock input[type="password"] {
+  width: min(16rem, 70vw);
+  padding: 0.7rem 1.1rem;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  font: inherit;
+  font-size: var(--step-sm);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.page-lock input[type="password"]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.page-lock__error {
+  margin: 0.25rem 0 0;
+  font-size: var(--step-xs);
+  color: var(--hot-pink);
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {
@@ -1353,4 +1655,59 @@ main > *,
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
   }
+}
+
+/* Label centred over the placeholder image on projects that are not ready yet. */
+.project__soon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #fff;
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 10px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* Cut-out product shots (transparent PNGs) sit on a light grey backdrop. It is
+   on the img so it follows the rounded corners. */
+.case-figure--grey img { background: #e6e6e6; }
+
+/* The gated pages wrap their content in #project-content, which would otherwise
+   take the case container's width and stop the hero short of the screen edges.
+   Let the wrapper run full width and put the container on its children, as .case
+   does for the open pages. */
+.case > #project-content { max-width: none; padding-inline: 0; }
+
+.case > #project-content > *:not(.bleed) {
+  max-width: 1560px;
+  margin-inline: auto;
+  padding-inline: clamp(1.25rem, 4vw, 3.5rem);
+}
+
+/* The gated tiles show their image blurred; the scale keeps the blur's soft
+   edge outside the tile, which clips it with overflow: hidden. */
+.project--locked .project__media img {
+  filter: blur(36px);
+  transform: scale(1.25);
+}
+
+/* Label over a photograph: a dark wash under the text and a heavier, larger
+   setting so it reads against any part of the image. */
+.project__media:has(.project__soon--photo)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgb(0 0 0 / 0.45);
+  pointer-events: none;
+}
+
+.project__soon--photo {
+  z-index: 1;
+  font-size: clamp(1.1rem, 2.4vw, 1.75rem);
+  font-weight: 600;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.7);
 }

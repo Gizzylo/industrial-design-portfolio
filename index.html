@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
-  <link rel="stylesheet" href="css/style.css?v=78">
+  <link rel="stylesheet" href="css/style.css?v=108">
 </head>
 <body>
   <a class="skip-link" href="#work">Skip to work</a>
@@ -36,23 +36,10 @@
   </header>
 
   <main>
-    <!-- HERO — the h1 is split into words by js/reveal.js. Keep it plain
-         text here; the splitter reads it and rebuilds it. -->
-    <section class="hero hero--full">
-      <!-- The greeting is gone from view, but the page still needs one h1 for
-           search engines and screen readers. -->
-      <h1 class="visually-hidden">Cindy Lopez — Industrial Design</h1>
-      <p class="hero__body hero__body--intro">
-        I'm an <em><span>industrial designer</span></em> in the Bay Area, working across product form,
-        mechanism, and manufacture — from first sketch to production-ready part.
-      </p>
-      <a class="scroll-cue" href="#work" aria-label="Scroll to the work">
-        <svg width="24" height="34" viewBox="0 0 24 34" aria-hidden="true" focusable="false">
-          <path d="M12 2 V30 M4 22 L12 30 L20 22" fill="none" stroke="currentColor"
-                stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
-      </a>
-    </section>
+    <!-- The page still needs exactly one h1 for search engines and screen
+         readers, so it stays here, visually hidden. The work starts straight
+         after it. -->
+    <h1 class="visually-hidden">Cindy Lopez — Industrial Design</h1>
 
     <!-- PROJECTS — four slots. Duplicate an <article> to add a fifth.
 
@@ -77,11 +64,11 @@
 
           <article class="project">
             <div class="project__media">
-              <img src="images/root-tile.jpg" width="1600" height="753"
+              <img src="Images Curbside/CURBSIDE_ROUND.25.png" width="3840" height="2160"
                    decoding="async" alt="">
             </div>
             <div class="project__body">
-              <h3 class="project__title"><a href="projects/project-two.html">Project Two</a></h3>
+              <h3 class="project__title"><a href="projects/project-two.html">Curbside EV</a></h3>
             </div>
           </article>
         </div>
@@ -89,8 +76,9 @@
         <div class="project-row">
           <article class="project">
             <div class="project__media">
-              <img src="images/placeholder-4x3.svg" width="1200" height="900"
+              <img src="images/placeholder-light-4x3.svg" width="1200" height="900"
                    loading="lazy" decoding="async" alt="">
+              <span class="project__soon">Coming soon</span>
             </div>
             <div class="project__body">
               <h3 class="project__title"><a href="projects/project-three.html">Project Three</a></h3>
@@ -99,11 +87,32 @@
 
           <article class="project project--wide">
             <div class="project__media">
-              <img src="images/placeholder-4x3.svg" width="1200" height="900"
+              <img src="images/placeholder-light-4x3.svg" width="1200" height="900"
                    loading="lazy" decoding="async" alt="">
+              <span class="project__soon">Coming soon</span>
             </div>
             <div class="project__body">
               <h3 class="project__title"><a href="projects/project-four.html">Project Four</a></h3>
+            </div>
+          </article>
+        </div>
+
+        <!-- A fifth tile, alone in its row so it fills the full width. Gated
+             instead of linked — see js/private-lock.js. Not real security:
+             the password ships in that file. -->
+        <div class="project-row">
+          <article class="project project--locked">
+            <div class="project__media">
+              <img src="Images%20SB/web/hero-firefly.jpg" width="2400" height="2400"
+                   loading="lazy" decoding="async" alt="">
+              <form class="project__lock" id="private-lock" autocomplete="off">
+                <div class="project__lock-row">
+                  <label class="visually-hidden" for="private-password">Password</label>
+                  <input type="password" id="private-password" placeholder="Password" required>
+                  <button type="submit" aria-label="Unlock">&rarr;</button>
+                </div>
+                <p class="project__lock-error" id="private-error" hidden>Incorrect password — try again.</p>
+              </form>
             </div>
           </article>
         </div>
@@ -111,37 +120,15 @@
     </section>
 
   </main>
-
-  <footer class="site-footer">
-    <div class="site-footer__top">
-      <div>
-        <p class="eyebrow">Available for work</p>
-        <p class="site-footer__pitch">Let's make something worth building.</p>
-      </div>
-
-      <nav class="footer-nav" aria-label="Footer">
-        <div>
-          <p class="eyebrow">Site</p>
-          <ul>
-            <li><a href="index.html">Work</a></li>
-            <li><a href="about.html">About</a></li>
-          </ul>
-        </div>
-        <div>
-          <p class="eyebrow">Elsewhere</p>
-          <ul>
-            <li><a href="mailto:cindy.lopez@hayden.ai">Email</a></li>
-            <!-- Add LinkedIn, résumé PDF, or Instagram here. -->
-          </ul>
-        </div>
-      </nav>
-    </div>
-
-    <div class="site-footer__bottom">
-      <p>&copy; 2026 Cindy Lopez</p>
-      <p>Bay Area, California</p>
-    </div>
-  </footer>
-  <script src="js/reveal.js?v=78"></script>
+  <script src="js/reveal.js?v=90"></script>
+  <script src="js/private-lock.js?v=91"></script>
+  <script>
+    PrivateLock.guardTile({
+      form: document.getElementById('private-lock'),
+      input: document.getElementById('private-password'),
+      error: document.getElementById('private-error'),
+      redirect: 'projects/private/index.html'
+    });
+  </script>
 </body>
 </html>

@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Project Four — Cindy Lopez</title>
-  <meta name="description" content="Project Four — Concept study. Industrial design work by Cindy Lopez.">
+  <title>Private — Cindy Lopez</title>
+  <meta name="description" content="Private — Cindy Lopez.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fustat:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap">
-  <link rel="stylesheet" href="../css/style.css?v=78">
+  <link rel="stylesheet" href="../../css/style.css?v=108">
 </head>
 <body>
   <a class="skip-link" href="#project">Skip to content</a>
 
   <header class="site-header">
     <nav class="nav" aria-label="Primary">
-      <a class="nav__name" href="../index.html" aria-label="Cindy Lopez — home">
+      <a class="nav__name" href="../../index.html" aria-label="Cindy Lopez — home">
         <svg class="logo" viewBox="0 0 40 40" aria-hidden="true" focusable="false">
           <!-- C: 260 degrees of arc, opening to the right — also the face -->
           <path class="logo__c" d="M28.36 10.04 A13 13 0 1 0 28.36 29.96"/>
@@ -29,144 +29,70 @@
         </svg>
       </a>
       <ul class="nav__links">
-        <li><a href="../index.html" aria-current="page">Work</a></li>
-        <li><a href="../about.html">About</a></li>
+        <li><a href="../../index.html" aria-current="page">Work</a></li>
+        <li><a href="../../about.html">About</a></li>
       </ul>
     </nav>
   </header>
 
   <main id="project" class="case">
-    <!-- HERO SHOT — first thing on the page, edge to edge. -->
-    <figure class="case-hero bleed">
-      <img src="../images/placeholder-16x9.svg" width="1600" height="900"
-           decoding="async" alt="">
-    </figure>
-
-
-    <section class="hero">
-      <h1 class="hero__title" data-split="words">Project Four</h1>
-      <p class="hero__body">A short line naming the product and who it is for.</p>
-    </section>
-
-    <!-- Two side by side -->
-    <div class="case-figures">
-      <figure class="case-figure">
-        <img src="../images/placeholder-4x3.svg" width="1200" height="900" loading="lazy" decoding="async" alt="">
-      </figure>
-      <figure class="case-figure">
-        <img src="../images/placeholder-4x3.svg" width="1200" height="900" loading="lazy" decoding="async" alt="">
-      </figure>
+    <!-- Shown until the password matches — see js/private-lock.js.
+         Not real security: the password ships in that file. -->
+    <div class="page-lock" id="page-lock">
+      <p class="page-lock__eyebrow">Private</p>
+      <h1 class="page-lock__title">This project is password protected</h1>
+      <p class="page-lock__body">Enter the password to see both case studies.</p>
+      <form id="page-lock-form" autocomplete="off">
+        <label class="visually-hidden" for="page-lock-password">Password</label>
+        <input type="password" id="page-lock-password" placeholder="Password" required>
+        <button class="button" type="submit">Unlock</button>
+      </form>
+      <p class="page-lock__error" id="page-lock-error" hidden>Incorrect password — try again.</p>
     </div>
 
-    <!-- One large with two stacked beside it -->
-    <div class="case-trio">
-      <figure class="case-figure case-figure--lg">
-        <img src="../images/placeholder-4x3.svg" width="1200" height="900" loading="lazy" decoding="async" alt="">
-      </figure>
-      <figure class="case-figure">
-        <img src="../images/placeholder-4x3.svg" width="1200" height="900" loading="lazy" decoding="async" alt="">
-      </figure>
-      <figure class="case-figure">
-        <img src="../images/placeholder-4x3.svg" width="1200" height="900" loading="lazy" decoding="async" alt="">
-      </figure>
-    </div>
+    <div id="project-content" hidden>
+      <h1 class="visually-hidden">Private</h1>
 
-    <!-- One across to close -->
-    <figure class="case-figure">
-      <img src="../images/placeholder-16x9.svg" width="1600" height="900" loading="lazy" decoding="async" alt="">
-    </figure>
-    <!-- One image per row -->
-      <div class="case-row">
-        <div class="carousel">
-          <img src="../images/placeholder-16x9.svg" width="1600" height="900" loading="lazy" decoding="async" alt="">
-          <img src="../images/placeholder-4x3.svg" width="1200" height="900" loading="lazy" decoding="async" alt="">
-          <img src="../images/placeholder-16x9.svg" width="1600" height="900" loading="lazy" decoding="async" alt="">
+      <!-- Two sub-projects, built the same way as the tiles on the home page. -->
+      <section class="work" aria-label="Private sub-projects">
+        <div class="grid">
+          <div class="project-row">
+            <article class="project">
+              <div class="project__media">
+                <img src="../../Images%20SB/web/hero-firefly.jpg" width="2400" height="2400"
+                     loading="lazy" decoding="async" alt="">
+              </div>
+              <div class="project__body">
+                <h3 class="project__title"><a href="private-a.html">SBSA - School Bus Stop Arm</a></h3>
+              </div>
+            </article>
+
+            <article class="project">
+              <div class="project__media">
+                <img src="../../images/falcon-lite-hero.jpg" width="2400" height="1800"
+                     loading="lazy" decoding="async" alt="Falcon Lite">
+                <span class="project__soon project__soon--photo">Work in progress</span>
+              </div>
+            </article>
+          </div>
         </div>
-      </div>
+      </section>
 
-      <div class="case-row">
-        <figure class="case-figure">
-          <img src="../images/placeholder-16x9.svg" width="1600" height="900" loading="lazy" decoding="async" alt="">
-        </figure>
-      </div>
-
-      <div class="case-row">
-        <figure class="case-figure">
-          <img src="../images/placeholder-16x9.svg" width="1600" height="900" loading="lazy" decoding="async" alt="">
-        </figure>
-      </div>
-
-      <div class="case-row">
-        <figure class="case-figure">
-          <img src="../images/placeholder-16x9.svg" width="1600" height="900" loading="lazy" decoding="async" alt="">
-        </figure>
-      </div>
-
-      <div class="case-row">
-        <figure class="case-figure">
-          <img src="../images/placeholder-16x9.svg" width="1600" height="900" loading="lazy" decoding="async" alt="">
-        </figure>
-      </div>
-
-    <!-- SPEC ROW — swap in the real duration, industry and tools. -->
-    <dl class="case-meta">
-      <div>
-        <dt>Duration</dt>
-        <dd>2 weeks</dd>
-      </div>
-      <div>
-        <dt>Industry</dt>
-        <dd>Concept study</dd>
-      </div>
-      <div>
-        <dt>Skills</dt>
-        <dd>Sketching, Fusion 360</dd>
-      </div>
-      <div>
-        <dt>Role</dt>
-        <dd>Industrial design, prototyping</dd>
-      </div>
-    </dl>
-
-
-
-
-
-
-<section class="about-teaser">
-      <p><a class="link-arrow" href="../index.html">Back to all work</a></p>
-    </section>
+      <section class="about-teaser">
+        <p><a class="link-arrow" href="../../index.html">Back to all work</a></p>
+      </section>
+    </div>
   </main>
-
-  <footer class="site-footer">
-    <div class="site-footer__top">
-      <div>
-        <p class="eyebrow">Available for work</p>
-        <p class="site-footer__pitch">Let's make something worth building.</p>
-      </div>
-
-      <nav class="footer-nav" aria-label="Footer">
-        <div>
-          <p class="eyebrow">Site</p>
-          <ul>
-            <li><a href="../index.html">Work</a></li>
-            <li><a href="../about.html">About</a></li>
-          </ul>
-        </div>
-        <div>
-          <p class="eyebrow">Elsewhere</p>
-          <ul>
-            <li><a href="mailto:cindy.lopez@hayden.ai">Email</a></li>
-          </ul>
-        </div>
-      </nav>
-    </div>
-
-    <div class="site-footer__bottom">
-      <p>&copy; 2026 Cindy Lopez</p>
-      <p>Bay Area, California</p>
-    </div>
-  </footer>
-  <script src="../js/reveal.js?v=78"></script>
+  <script src="../../js/reveal.js?v=90"></script>
+  <script src="../../js/private-lock.js?v=91"></script>
+  <script>
+    PrivateLock.guardPage({
+      lock: document.getElementById('page-lock'),
+      content: document.getElementById('project-content'),
+      form: document.getElementById('page-lock-form'),
+      input: document.getElementById('page-lock-password'),
+      error: document.getElementById('page-lock-error')
+    });
+  </script>
 </body>
 </html>

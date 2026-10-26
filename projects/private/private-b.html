@@ -36,21 +36,7 @@
   </header>
 
   <main id="project" class="case">
-    <!-- Shown until the password matches — see js/private-lock.js.
-         Not real security: the password ships in that file. -->
-    <div class="page-lock" id="page-lock">
-      <p class="page-lock__eyebrow">Private</p>
-      <h1 class="page-lock__title">This project is password protected</h1>
-      <p class="page-lock__body">Enter the password to see Sub-Project B.</p>
-      <form id="page-lock-form" autocomplete="off">
-        <label class="visually-hidden" for="page-lock-password">Password</label>
-        <input type="password" id="page-lock-password" placeholder="Password" required>
-        <button class="button" type="submit">Unlock</button>
-      </form>
-      <p class="page-lock__error" id="page-lock-error" hidden>Incorrect password — try again.</p>
-    </div>
-
-    <div id="project-content" hidden>
+    <div id="project-content">
       <!-- HERO SHOT — first thing on the page, edge to edge. -->
       <figure class="case-hero bleed">
         <img src="../../images/placeholder-16x9.svg" width="1600" height="900"
@@ -149,15 +135,5 @@
     </div>
   </main>
   <script src="../../js/reveal.js?v=90"></script>
-  <script src="../../js/private-lock.js?v=91"></script>
-  <script>
-    PrivateLock.guardPage({
-      lock: document.getElementById('page-lock'),
-      content: document.getElementById('project-content'),
-      form: document.getElementById('page-lock-form'),
-      input: document.getElementById('page-lock-password'),
-      error: document.getElementById('page-lock-error')
-    });
-  </script>
 </body>
 </html>

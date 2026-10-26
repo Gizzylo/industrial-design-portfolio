@@ -103,12 +103,12 @@
         <div class="project-row">
           <article class="project project--locked">
             <div class="project__media">
-              <img src="Images%20SB/web/hero-firefly.jpg" width="2400" height="2400"
+              <img src="images/private-tile.jpg" width="900" height="900"
                    loading="lazy" decoding="async" alt="">
-              <form class="project__lock" id="private-lock" autocomplete="off">
+              <form class="project__lock" id="private-lock" method="post" action="/unlock" autocomplete="off">
                 <div class="project__lock-row">
                   <label class="visually-hidden" for="private-password">Password</label>
-                  <input type="password" id="private-password" placeholder="Password" required>
+                  <input type="password" id="private-password" name="password" placeholder="Password" required>
                   <button type="submit" aria-label="Unlock">&rarr;</button>
                 </div>
                 <p class="project__lock-error" id="private-error" hidden>Incorrect password — try again.</p>
@@ -121,14 +121,12 @@
 
   </main>
   <script src="js/reveal.js?v=90"></script>
-  <script src="js/private-lock.js?v=91"></script>
   <script>
-    PrivateLock.guardTile({
-      form: document.getElementById('private-lock'),
-      input: document.getElementById('private-password'),
-      error: document.getElementById('private-error'),
-      redirect: 'projects/private/index.html'
-    });
+    // A wrong password comes back here with ?locked=1.
+    if (location.search.indexOf('locked=1') !== -1) {
+      var err = document.getElementById('private-error');
+      if (err) err.hidden = false;
+    }
   </script>
 </body>
 </html>
